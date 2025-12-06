@@ -1,0 +1,36 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: InfTower - Win32 Debug--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating command line "rc.exe /l 0x409 /fo"Debug/res.res" /d "_DEBUG" "E:\project7\InfTower\VcSrc\res.rc"" 
+Creating temporary file "C:\Users\SILLYB~1\AppData\Local\Temp\RSP736F.tmp" with contents
+[
+kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib opengl32.lib glu32.lib winmm.lib /nologo /subsystem:windows /incremental:yes /pdb:"Debug/InfTower.pdb" /debug /machine:I386 /out:"Debug/InfTower.exe" /pdbtype:sept 
+.\Debug\DisplayList.obj
+.\Debug\Floor.obj
+.\Debug\GameWorld.obj
+.\Debug\main.obj
+.\Debug\MidiPlayer.obj
+.\Debug\Node.obj
+.\Debug\Node3D.obj
+.\Debug\Player.obj
+.\Debug\Rsrc.obj
+.\Debug\Vector3.obj
+.\Debug\res.res
+]
+Creating command line "link.exe @C:\Users\SILLYB~1\AppData\Local\Temp\RSP736F.tmp"
+<h3>Output Window</h3>
+Compiling resources...
+Linking...
+
+
+
+<h3>Results</h3>
+InfTower.exe - 0 error(s), 0 warning(s)
+</pre>
+</body>
+</html>

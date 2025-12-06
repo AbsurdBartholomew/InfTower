@@ -1,0 +1,290 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x40004L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904b0"
+        BEGIN
+            VALUE "Comments", "\0"
+            VALUE "CompanyName", "Anchor Collective\0"
+            VALUE "FileDescription", "GL Infinite Tower Game\0"
+            VALUE "FileVersion", "1, 0, 0, 1\0"
+            VALUE "InternalName", "InfTower\0"
+            VALUE "LegalCopyright", "Copyright © 2025\0"
+            VALUE "LegalTrademarks", "\0"
+            VALUE "OriginalFilename", "InfTower.exe\0"
+            VALUE "PrivateBuild", "\0"
+            VALUE "ProductName", "Anchor Collective InfTower\0"
+            VALUE "ProductVersion", "1, 0, 0, 1\0"
+            VALUE "SpecialBuild", "\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+#endif    // !_MAC
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_DIALOG1 DIALOG DISCARDABLE  0, 0, 186, 93
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Dialog"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,129,7,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,129,24,50,14
+END
+
+#if defined(APSTUDIO_INVOKED) || defined(_DEBUG)
+#if defined(APSTUDIO_INVOKED)
+IDD_E_LEFTBAR$(_DEBUG) DIALOGEX 0, 0, 162, 201
+#else
+IDD_E_LEFTBAR DIALOGEX 0, 0, 162, 201
+#endif
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_TOOLWINDOW
+CAPTION "World Tree"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "Tree1",IDC_TREE1,"SysTreeView32",WS_BORDER | WS_TABSTOP,
+                    5,5,145,190
+END
+#endif
+
+IDD_P_NODE3D DIALOG DISCARDABLE  0, 0, 161, 141
+STYLE WS_CHILD
+FONT 8, "MS Sans Serif"
+BEGIN
+    EDITTEXT        IDC_N3D_POSEDIT,50,18,100,14,ES_AUTOHSCROLL
+    GROUPBOX        "Positional",IDC_STATIC,0,0,160,110
+    LTEXT           "Position",IDC_STATIC,15,20,26,8
+    EDITTEXT        IDC_N3D_ROTEDIT,50,38,100,14,ES_AUTOHSCROLL
+    LTEXT           "Rotation",IDC_STATIC,15,40,28,8
+    EDITTEXT        IDC_N3D_SCALEDIT,50,58,100,14,ES_AUTOHSCROLL
+    LTEXT           "Scale",IDC_STATIC,15,60,19,8
+    CONTROL         "Visible",IDC_N3D_VISIBLE,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,5,125,36,10
+    CONTROL         "Has Collision",IDC_N3D_COLLIDABLE,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,100,125,56,10
+    EDITTEXT        IDC_N3D_VELOCITY,50,80,100,14,ES_AUTOHSCROLL
+    LTEXT           "Velocity",IDC_STATIC,15,83,26,8
+    PUSHBUTTON      "Matrix Edit",IDC_N3D_MTXEDIT,45,125,50,14
+END
+
+IDD_MATRIX_EDITOR DIALOGEX 0, 0, 186, 111
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_TOOLWINDOW
+CAPTION "Matrix Editor"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,5,95,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,130,95,50,14
+    EDITTEXT        IDC_MTX_FIELD,5,5,40,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_MTX_FIELD2,50,5,40,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_MTX_FIELD3,95,5,40,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_MTX_FIELD4,140,5,40,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_MTX_FIELD5,5,25,40,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_MTX_FIELD6,50,25,40,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_MTX_FIELD7,95,25,40,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_MTX_FIELD8,140,25,40,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_MTX_FIELD9,5,45,40,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_MTX_FIELD10,50,45,40,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_MTX_FIELD11,95,45,40,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_MTX_FIELD12,140,45,40,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_MTX_FIELD13,5,65,40,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_MTX_FIELD14,50,65,40,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_MTX_FIELD15,95,65,40,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_MTX_FIELD16,140,65,40,14,ES_AUTOHSCROLL
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_DIALOG1, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 179
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 86
+    END
+
+    "IDD_E_LEFTBAR$(_DEBUG)", DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 155
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 194
+    END
+
+    IDD_P_NODE3D, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 154
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 134
+    END
+
+    IDD_MATRIX_EDITOR, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 179
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 104
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_ICON1               ICON    DISCARDABLE     "icon1.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Accelerator
+//
+
+IDR_ACCELERATOR1 ACCELERATORS DISCARDABLE 
+BEGIN
+    "E",            IDS_EDITOR,             VIRTKEY, NOINVERT
+    "S",            IDS_SAVE,               VIRTKEY, CONTROL, NOINVERT
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+#if defined(APSTUDIO_INVOKED) || defined(_DEBUG)
+#if defined(APSTUDIO_INVOKED)
+IDR_EDITOR_MENU$(_DEBUG) MENU DISCARDABLE 
+#else
+IDR_EDITOR_MENU MENU DISCARDABLE 
+#endif
+BEGIN
+    POPUP "File"
+    BEGIN
+        MENUITEM "New FLR",                     ID_FILE_NEW
+        MENUITEM "Save FLR",                    ID_FILE_SAVEFLR
+    END
+END
+#endif
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_BITMAP1             BITMAP  DISCARDABLE     "bitmap1.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_WINDOW_TITLE        "Infinite Tower"
+    IDS_EDITOR_TITLE        "Inf Editor"
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+
