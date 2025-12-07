@@ -103,6 +103,7 @@ void CDisplayList::Load(const char *filePath)
 	// time to actually construct the list
 	glNewList(m_glList, GL_COMPILE);
     glRotatef(-90, 1, 0, 0);
+	glRotatef(180, 0, 0, 1);
 	glBegin(GL_TRIANGLES);
 
 	for(int t = 0; t < m_triCount; t++)

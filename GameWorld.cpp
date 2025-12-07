@@ -88,7 +88,7 @@ void CGameWorld::Init()
 
 	CMidiPlayer::playMIDIFile(m_hwnd, "Rsrc/bob.mid");
 
-	dl.Load("Rsrc/sillybart.dl");
+	dl.Load("Rsrc/computer.dl");
 
 	float light_radius = 5.0f;
 
@@ -138,7 +138,7 @@ void CGameWorld::Draw()
 	//m_player->m_position.y += 0.1f;
 
 	gluLookAt(
-        0, 3, -5,
+        3, 3, -3,
         0,0,0,
         0, 1, 0);
 	
