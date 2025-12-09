@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "Node3D.h"
+#include "Log.h"
 
 //////////////////////////////////////////////////////////////////////
 // Definitions/Constants
@@ -20,11 +21,12 @@
 
 CDisplayList::CDisplayList()
 {
-	char d[16];
+	//char d[16];
 	m_id = Hash((unsigned char*)GetResourceName());
-	printf("resource ID %s hashes to %d\n", GetResourceName(), m_id);
+	//printf("resource ID %s hashes to %d\n", GetResourceName(), m_id);
+	Log::Print("resource ID %s hashes to %d\n", GetResourceName(), m_id);
 
-	sprintf(d, "%d", m_id);
+	//sprintf(d, "%d", m_id);
 	//MessageBox(NULL, GetResourceName(), d, MB_OK);
 	m_version = DL_VERSION;
 }
@@ -54,6 +56,7 @@ void CDisplayList::Load(const char *filePath)
 
 	if(fPtr == NULL)
 	{
+		Log::Print("Could not open DL file %s\n", filePath);
 		MessageBox(NULL, "Could not open DL file!", "Display List", MB_OK);
 		exit(EXIT_FAILURE);
 	}
@@ -63,6 +66,7 @@ void CDisplayList::Load(const char *filePath)
 
 	if(id != m_id)
 	{
+		Log::Print("Unexpected display list ID %d - likely not a DL!\n", id);
 		MessageBox(NULL, "Not a display list!", "Display List", MB_OK);
 		exit(EXIT_FAILURE);
 	}
@@ -75,7 +79,7 @@ void CDisplayList::Load(const char *filePath)
 	fread(thisTextureName, 1, tempTxtrNameSize, fPtr);
 
 	fread(&faceCount, 4, 1, fPtr);
-    printf("Texture Name: '%s'\nFace Count: %d\n", thisTextureName, faceCount);
+	Log::Print("Texture Name: '%s'\nFace Count: %d\n", thisTextureName, faceCount);
 
 	m_triCount = faceCount * 3;
 	m_tris = new Tri[m_triCount];
@@ -125,6 +129,7 @@ void CDisplayList::Serialize(const char *filePath)
 
 	if(fPtr == NULL)
 	{
+		Log::Print("Could not create DL file %s\n", filePath);
 		MessageBox(NULL, "Could not create DL file!", "Display List", MB_OK);
 		exit(EXIT_FAILURE);
 	}

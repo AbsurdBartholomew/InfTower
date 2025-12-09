@@ -10,6 +10,7 @@
 #include "DisplayList.h"
 #include "GameWorld.h"
 #include "Rsrc.h"
+#include "Log.h"
 
 HDC hDC;
 HPALETTE hPalette = NULL;
@@ -31,6 +32,7 @@ LONG WINAPI WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		PostMessage(hWnd, WM_PAINT, 0, 0);
 		return 0;
 	case WM_CLOSE:
+		Log::CloseLogFile();
 		PostQuitMessage(0);
 	}
 
@@ -198,6 +200,8 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	//testDL = new CDisplayList();
 	//testDL->Serialize("Rsrc/test.dl");
 	//testDL->Load("Rsrc/test.dl");
+
+	Log::SetLogOutPath("inftower.log");
 
 	gameWorld = new CGameWorld();
 	gameWorld->m_hdc = hDC;
