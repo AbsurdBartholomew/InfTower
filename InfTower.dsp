@@ -103,6 +103,10 @@ SOURCE=.\GameWorld.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\Log.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\main.cpp
 # End Source File
 # Begin Source File
@@ -152,6 +156,10 @@ SOURCE=.\GameWorld.h
 # Begin Source File
 
 SOURCE=.\Hash.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Log.h
 # End Source File
 # Begin Source File
 
