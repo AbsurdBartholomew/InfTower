@@ -9,6 +9,8 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
+#include <math.h>
+
 struct Vector3
 {
 	float x;
@@ -17,6 +19,45 @@ struct Vector3
 
 	Vector3(float _x, float _y, float _z) { x = _x; y = _y; z = _z; }
 	Vector3() { x = 0; y = 0; z = 0; }
+
+	Vector3 &operator +=(const Vector3 &rhs)
+	{
+		x += rhs.x;
+		y += rhs.y;
+		z += rhs.z;
+		return *this;
+	}
+
+	Vector3 &operator -=(const Vector3 &rhs)
+	{
+		x -= rhs.x;
+		y -= rhs.y;
+		z -= rhs.z;
+		return *this;
+	}
+
+	Vector3 &operator -(const Vector3 &rhs)
+	{
+		Vector3 r = Vector3(x,y,z);
+		r.x -= rhs.x;
+		r.y -= rhs.y;
+		r.z -= rhs.z;
+		return *this;
+	}
+
+	Vector3 &operator *=(const Vector3 &rhs)
+	{
+		x *= rhs.x;
+		y *= rhs.y;
+		z *= rhs.z;
+		return *this;
+	}
+
+	float GetMagnitude()
+	{
+		float dist = (x * x) + (y * y) + (z * z);
+		return sqrtf(dist);
+	}
 };
 
 struct Vector2

@@ -6,18 +6,19 @@
 --------------------Configuration: InfTower - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\Users\SILLYB~1\AppData\Local\Temp\RSPE180.tmp" with contents
+Creating temporary file "C:\Users\SILLYB~1\AppData\Local\Temp\RSPC253.tmp" with contents
 [
 /nologo /MLd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /FR"Debug/" /Fp"Debug/InfTower.pch" /YX /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
-"E:\project7\InfTower\VcSrc\Log.cpp"
+"E:\project7\InfTower\VcSrc\Interactive.cpp"
 ]
-Creating command line "cl.exe @C:\Users\SILLYB~1\AppData\Local\Temp\RSPE180.tmp" 
-Creating temporary file "C:\Users\SILLYB~1\AppData\Local\Temp\RSPE181.tmp" with contents
+Creating command line "cl.exe @C:\Users\SILLYB~1\AppData\Local\Temp\RSPC253.tmp" 
+Creating temporary file "C:\Users\SILLYB~1\AppData\Local\Temp\RSPC254.tmp" with contents
 [
 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib opengl32.lib glu32.lib winmm.lib /nologo /subsystem:windows /incremental:yes /pdb:"Debug/InfTower.pdb" /debug /machine:I386 /out:"Debug/InfTower.exe" /pdbtype:sept 
 .\Debug\DisplayList.obj
 .\Debug\Floor.obj
 .\Debug\GameWorld.obj
+.\Debug\Log.obj
 .\Debug\main.obj
 .\Debug\MidiPlayer.obj
 .\Debug\Node.obj
@@ -26,19 +27,22 @@ kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32
 .\Debug\Rsrc.obj
 .\Debug\Vector3.obj
 .\Debug\res.res
-.\Debug\Log.obj
+.\Debug\Bitmap.obj
+.\Debug\Interactive.obj
+.\Debug\StaircaseDoor.obj
 ]
-Creating command line "link.exe @C:\Users\SILLYB~1\AppData\Local\Temp\RSPE181.tmp"
+Creating command line "link.exe @C:\Users\SILLYB~1\AppData\Local\Temp\RSPC254.tmp"
 <h3>Output Window</h3>
 Compiling...
-Log.cpp
+Interactive.cpp
 Linking...
-Creating temporary file "C:\Users\SILLYB~1\AppData\Local\Temp\RSPE24C.tmp" with contents
+Creating temporary file "C:\Users\SILLYB~1\AppData\Local\Temp\RSPC310.tmp" with contents
 [
 /nologo /o"Debug/InfTower.bsc" 
 .\Debug\DisplayList.sbr
 .\Debug\Floor.sbr
 .\Debug\GameWorld.sbr
+.\Debug\Log.sbr
 .\Debug\main.sbr
 .\Debug\MidiPlayer.sbr
 .\Debug\Node.sbr
@@ -46,8 +50,10 @@ Creating temporary file "C:\Users\SILLYB~1\AppData\Local\Temp\RSPE24C.tmp" with 
 .\Debug\Player.sbr
 .\Debug\Rsrc.sbr
 .\Debug\Vector3.sbr
-.\Debug\Log.sbr]
-Creating command line "bscmake.exe @C:\Users\SILLYB~1\AppData\Local\Temp\RSPE24C.tmp"
+.\Debug\Bitmap.sbr
+.\Debug\Interactive.sbr
+.\Debug\StaircaseDoor.sbr]
+Creating command line "bscmake.exe @C:\Users\SILLYB~1\AppData\Local\Temp\RSPC310.tmp"
 Creating browse info file...
 <h3>Output Window</h3>
 

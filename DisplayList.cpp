@@ -76,10 +76,12 @@ void CDisplayList::Load(const char *filePath)
     int faceCount = 0;
 
 	fread(&tempTxtrNameSize, sizeof(tempTxtrNameSize), 1, fPtr);
-	fread(thisTextureName, 1, tempTxtrNameSize, fPtr);
+	fread(m_bitmapName, 1, tempTxtrNameSize, fPtr);
+
+	LoadTexture();
 
 	fread(&faceCount, 4, 1, fPtr);
-	Log::Print("Texture Name: '%s'\nFace Count: %d\n", thisTextureName, faceCount);
+	Log::Print("Texture Name: '%s'\nFace Count: %d\n", m_bitmapName, faceCount);
 
 	m_triCount = faceCount * 3;
 	m_tris = new Tri[m_triCount];
@@ -142,5 +144,34 @@ void CDisplayList::Serialize(const char *filePath)
 
 void CDisplayList::Draw()
 {
+	if(m_data != NULL) glTexImage2D(GL_TEXTURE_2D, 0, 4, m_bitmap.bmWidth, m_bitmap.bmHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, m_data);
 	glCallList(m_glList);
+}
+
+void CDisplayList::LoadTexture()
+{
+	char path[128];
+	HBITMAP bmp;
+	const char *pathStart = "rsrc/";
+
+	sprintf(path, "%s%s", pathStart, m_bitmapName);
+	Log::Print("Path is %s\n", path);
+
+	bmp = (HBITMAP)LoadImage(NULL, path, IMAGE_BITMAP, 0, 0, LR_CREATEDIBSECTION | LR_LOADFROMFILE);
+	GetObject(bmp, sizeof(BITMAP), &m_bitmap);
+
+	unsigned char R,G,B;
+	m_data = (unsigned char*)m_bitmap.bmBits;
+
+	for (int b = 0; b < m_bitmap.bmWidth * m_bitmap.bmHeight ; b++)
+    {
+		B = m_data[b*3]; G = m_data[b*3+1]; R = m_data[b*3+2];
+		m_data[b*3] = R; m_data[b*3+1] = G; m_data[b*3+2] = B;
+    }
+
+	glGenTextures(1, &m_texture);
+	glBindTexture(GL_TEXTURE_2D, m_texture);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 }

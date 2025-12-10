@@ -48,6 +48,7 @@ CDisplayList dl;
 
 static const GLfloat environment_color[] = { (float)0.0f, (float)128/255.0f, (float)128/255.0f, 1.f };
 
+
 CGameWorld::CGameWorld()
 {
 
@@ -88,7 +89,7 @@ void CGameWorld::Init()
 
 	CMidiPlayer::playMIDIFile(m_hwnd, "Rsrc/bob.mid");
 
-	dl.Load("Rsrc/computer.dl");
+	dl.Load("Rsrc/hotel_extV3.dl");
 
 	float light_radius = 5.0f;
 
@@ -127,18 +128,18 @@ void CGameWorld::Draw()
 
     glEnable(GL_NORMALIZE);
     glEnable(GL_DEPTH_TEST);
-    //glEnable(GL_CULL_FACE);
-    //glEnable(GL_TEXTURE_2D);
+    glEnable(GL_CULL_FACE);
+    glEnable(GL_TEXTURE_2D);
     glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
     glColor3d(1.0f, 1.0f, 1.0f);
 
 	//m_player->UpdateCamera();
-	//m_player->m_position.z -= 0.1f;
-	//m_player->m_position.y += 0.1f;
+	m_player->m_position.z += -0.01f;
+	m_player->m_position.x += 0.001f;
 
 	gluLookAt(
-        3, 3, -3,
+        m_player->m_position.x, 3, -m_player->m_position.z,
         0,0,0,
         0, 1, 0);
 	
@@ -161,11 +162,11 @@ void CGameWorld::Draw()
 	glPopMatrix();*/
 	
 	glPushMatrix();
-	glEnable(GL_LIGHTING);
+	//glEnable(GL_LIGHTING);
 	glTranslatef(0, -1, 0);
-	//glScalef(0.1f,0.1f,0.1f);
+	glScalef(0.1f,0.1f,0.1f);
 	//glScalef(3,3,3);
-	glCallList(dl.m_glList);
+	dl.Draw();
 	glPopMatrix();
 	
 	/*

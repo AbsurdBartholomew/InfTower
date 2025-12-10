@@ -45,8 +45,12 @@ public:
 private:
 	Tri* m_tris;
 	int m_triCount;
+	
+	void LoadTexture();
+	char m_bitmapName[32];
 
-	const char *m_bitmapName;
+	unsigned char *m_data;
+	BITMAP m_bitmap;
 };
 
 #endif // !defined(AFX_DISPLAYLIST_H__71A044AF_81B5_49A7_8C65_11771FC4CB09__INCLUDED_)

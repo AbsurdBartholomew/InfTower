@@ -91,6 +91,10 @@ LINK32=link.exe
 # PROP Default_Filter "cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
 # Begin Source File
 
+SOURCE=.\Bitmap.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\DisplayList.cpp
 # End Source File
 # Begin Source File
@@ -100,6 +104,10 @@ SOURCE=.\Floor.cpp
 # Begin Source File
 
 SOURCE=.\GameWorld.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\Interactive.cpp
 # End Source File
 # Begin Source File
 
@@ -135,12 +143,20 @@ SOURCE=.\Rsrc.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\StaircaseDoor.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\Vector3.cpp
 # End Source File
 # End Group
 # Begin Group "Header Files"
 
 # PROP Default_Filter "h;hpp;hxx;hm;inl"
+# Begin Source File
+
+SOURCE=.\Bitmap.h
+# End Source File
 # Begin Source File
 
 SOURCE=.\DisplayList.h
@@ -156,6 +172,10 @@ SOURCE=.\GameWorld.h
 # Begin Source File
 
 SOURCE=.\Hash.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Interactive.h
 # End Source File
 # Begin Source File
 
@@ -180,6 +200,10 @@ SOURCE=.\Player.h
 # Begin Source File
 
 SOURCE=.\Rsrc.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\StaircaseDoor.h
 # End Source File
 # Begin Source File
 
