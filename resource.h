@@ -12,6 +12,7 @@
 #define IDD_E_LEFTBAR                   109
 #define IDD_P_NODE3D                    110
 #define IDD_MATRIX_EDITOR               111
+#define IDD_NAMEENTRY                   112
 #define IDC_TREE1                       1000
 #define IDC_N3D_POSEDIT                 1003
 #define IDC_N3D_ROTEDIT                 1004
@@ -21,6 +22,7 @@
 #define IDC_N3D_VELOCITY                1008
 #define IDC_N3D_MTXEDIT                 1009
 #define IDC_MTX_FIELD                   1010
+#define IDC_EDIT1                       1011
 #define IDC_MTX_FIELD2                  1012
 #define IDC_MTX_FIELD3                  1013
 #define IDC_MTX_FIELD4                  1014
@@ -44,9 +46,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        112
+#define _APS_NEXT_RESOURCE_VALUE        113
 #define _APS_NEXT_COMMAND_VALUE         40005
-#define _APS_NEXT_CONTROL_VALUE         1011
+#define _APS_NEXT_CONTROL_VALUE         1012
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

@@ -169,6 +169,17 @@ BEGIN
     EDITTEXT        IDC_MTX_FIELD16,140,65,40,14,ES_AUTOHSCROLL
 END
 
+IDD_NAMEENTRY DIALOG DISCARDABLE  0, 0, 192, 74
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "The Concierge"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,130,55,50,14,WS_DISABLED
+    LTEXT           "Okay. Just let me get your information. And your name is...?",
+                    IDC_STATIC,3,5,186,8
+    EDITTEXT        IDC_EDIT1,5,25,180,19,ES_AUTOHSCROLL
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -208,6 +219,14 @@ BEGIN
         RIGHTMARGIN, 179
         TOPMARGIN, 7
         BOTTOMMARGIN, 104
+    END
+
+    IDD_NAMEENTRY, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 185
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 67
     END
 END
 #endif    // APSTUDIO_INVOKED

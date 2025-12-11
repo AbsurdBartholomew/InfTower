@@ -18,6 +18,7 @@ public:
 	virtual ~CPlayer();
 
 	void UpdateCamera();
+	void Update(int dT);
 	
 	static CPlayer *New() { return new CPlayer(); }
 	void Register(unsigned short version);
@@ -28,6 +29,21 @@ public:
 	const char *GetResourceName() { return "Player"; }
 	unsigned int GetResourceVersion() { return 0; }
 	const char *GetResourceExtension() { return ".ply"; }
+
+private:
+	void MoveForward();
+	void MoveBack();
+	void MoveLeft();
+	void MoveRight();
+
+	void Jump();
+
+	float m_currentWalkSpeed;
+	float m_angle;
+
+	float m_walkFrames;
+
+	Vector3 m_direction;
 };
 
 #endif // !defined(AFX_PLAYER_H__5C8F184D_30D0_4A78_9823_516C973CCC1F__INCLUDED_)

@@ -11,6 +11,7 @@
 #include "GameWorld.h"
 #include "Rsrc.h"
 #include "Log.h"
+#include "Input.h"
 
 HDC hDC;
 HPALETTE hPalette = NULL;
@@ -20,6 +21,9 @@ CGameWorld *gameWorld;
 LONG WINAPI WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	static PAINTSTRUCT ps;
+
+	CInput::m_msg = uMsg;
+	CInput::m_wParam = wParam;
 
 	switch(uMsg)
 	{

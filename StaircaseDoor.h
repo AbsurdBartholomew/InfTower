@@ -17,7 +17,7 @@ public:
 	CStaircaseDoor();
 	virtual ~CStaircaseDoor();
 	
-	bool Check();
+	bool Check(void* data);
 	void Action();
 };
 

@@ -21,6 +21,9 @@ CNode3D::CNode3D()
 		Register(0);
 		hasRegistered = true;
 	}
+
+	m_isVisible = true;
+	m_canCollide = true;
 }
 
 CNode3D::~CNode3D()
@@ -44,6 +47,11 @@ void CNode3D::Draw()
 	{
 		m_children[i]->Draw();
 	}
+}
+
+void CNode3D::CollideAndSlide()
+{
+	m_position += m_velocity;
 }
 
 void CNode3D::Register(unsigned short version)

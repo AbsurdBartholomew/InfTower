@@ -1,0 +1,29 @@
+// Input.cpp: implementation of the CInput class.
+//
+//////////////////////////////////////////////////////////////////////
+
+#include "Input.h"
+
+//////////////////////////////////////////////////////////////////////
+// Construction/Destruction
+//////////////////////////////////////////////////////////////////////
+
+UINT CInput::m_msg;
+WPARAM CInput::m_wParam;
+
+CInput::CInput()
+{
+
+}
+
+CInput::~CInput()
+{
+
+}
+
+bool CInput::IsKeyHeld(WPARAM param)
+{
+	if(m_msg != WM_KEYDOWN) return false;
+	if(m_wParam == param) return true;
+	return false;
+}

@@ -49,6 +49,14 @@ void CDisplayList::Register(unsigned short version)
 
 void CDisplayList::Load(const char *filePath)
 {
+	// right now bitmap loading is bugged on 9x so we need to check that first
+	OSVERSIONINFO osvi;
+	ZeroMemory(&osvi, sizeof(OSVERSIONINFO));
+	osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
+	GetVersionEx(&osvi);
+
+	Log::Print("OS Version: %d\n", osvi.dwMajorVersion);
+
 	//char TEST[128];
 	FILE *fPtr = fopen(filePath, "rb");
 	int id = 0;
@@ -77,8 +85,8 @@ void CDisplayList::Load(const char *filePath)
 
 	fread(&tempTxtrNameSize, sizeof(tempTxtrNameSize), 1, fPtr);
 	fread(m_bitmapName, 1, tempTxtrNameSize, fPtr);
-
-	LoadTexture();
+	
+	if(osvi.dwMajorVersion >= 5) LoadTexture();
 
 	fread(&faceCount, 4, 1, fPtr);
 	Log::Print("Texture Name: '%s'\nFace Count: %d\n", m_bitmapName, faceCount);

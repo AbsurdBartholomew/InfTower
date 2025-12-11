@@ -6,10 +6,17 @@
 #include <windows.h>
 #include <GL/gl.h>
 #include <GL/glu.h>
+#include "Input.h"
+#include "Log.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
+
+inline float rad2deg(float rad)
+{
+	return rad * (180.0f / 3.14159);
+}
 
 static bool hasRegistered = false;
 
@@ -24,6 +31,11 @@ CPlayer::CPlayer()
 		Register(0);
 		hasRegistered = true;
 	}
+
+	m_currentWalkSpeed = 0.0f;
+	m_angle = 0.0f;
+
+	Log::Print("I'm at %f %f %f\n", m_position.x, m_position.y, m_position.z);
 }
 
 CPlayer::~CPlayer()
@@ -33,13 +45,17 @@ CPlayer::~CPlayer()
 
 void CPlayer::UpdateCamera()
 {
+	float walkOffset = sin(m_walkFrames / 16) / 4;
 	glLoadIdentity();
 
 	gluLookAt(
         0, 0, 0,
-        0,0,0,
+        0,0,-15,
         0, 1, 0);
-    glTranslatef(-m_position.x, -m_position.y, -m_position.z);
+	glRotatef(rad2deg(m_angle), 0, 1, 0);
+	glTranslatef(-m_position.x, -(m_position.y + 3) + walkOffset, -m_position.z);
+
+	//Log::Print("I'm at %f %f %f\n", m_position.x, m_position.y, m_position.z);
 }
 
 void CPlayer::Register(unsigned short version)
@@ -82,4 +98,74 @@ void CPlayer::Serialize(const char *filePath)
 	fwrite(&m_version, sizeof(m_version), 1, fPtr);
 
 	fclose(fPtr);
+}
+
+const float MAX_SPEED = 0.05f;
+const float SPEEDUP = 0.001f;
+
+void CPlayer::Update(int dT)
+{
+	m_velocity.x *= 0.95f;
+	m_velocity.z *= 0.95f;
+
+	if(CInput::IsKeyHeld(VK_UP))
+	{
+		MoveForward();
+	} else if(CInput::IsKeyHeld(VK_DOWN))
+	{
+		MoveBack();
+	} else
+	{
+		m_walkFrames = 0;
+	}
+
+	if(CInput::IsKeyHeld(VK_LEFT))
+	{
+		MoveLeft();
+	}
+	if(CInput::IsKeyHeld(VK_RIGHT))
+	{
+		MoveRight();
+	}
+
+	m_currentWalkSpeed -= SPEEDUP;
+	if(m_currentWalkSpeed < 0) m_currentWalkSpeed = 0;
+	
+	CollideAndSlide();
+	//m_position += m_velocity;
+}
+
+void CPlayer::MoveForward()
+{
+	m_currentWalkSpeed += SPEEDUP;
+
+	m_velocity.x += sin(m_angle) * m_currentWalkSpeed;
+	m_velocity.z -= cos(m_angle) * m_currentWalkSpeed;
+
+	m_walkFrames++;
+}
+
+void CPlayer::MoveBack()
+{
+	m_currentWalkSpeed -= SPEEDUP;
+
+	m_velocity.x += sin(m_angle) * m_currentWalkSpeed;
+	m_velocity.z -= cos(m_angle) * m_currentWalkSpeed;
+
+	m_walkFrames += 0.5f;
+}
+
+void CPlayer::MoveLeft()
+{
+	m_angle -= 0.01f;
+}
+
+void CPlayer::MoveRight()
+{
+	m_angle += 0.01f;
+}
+
+void CPlayer::Jump()
+{
+
 }

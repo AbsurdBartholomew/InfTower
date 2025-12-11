@@ -17,7 +17,7 @@ public:
 	CInteractive();
 	virtual ~CInteractive();
 	
-	virtual bool Check() = 0;
+	virtual bool Check(void* data) = 0;
 	virtual void Action() = 0;
 
 	bool GetIsInRange(Vector3 target);

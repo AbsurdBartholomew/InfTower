@@ -39,6 +39,8 @@ static const GLfloat light_diffuse[8][4] = {
     { 1.0f, 1.0f, 1.0f, 1.0f },
 };
 
+GLfloat fogColor[4] = {0.8f, 0.8f, 0.9f, 1.0f};
+
 const int BUILDING_RAND_POS_MIN = -4;
 const int BUILDING_RAND_POS_MAX = 4;
 
@@ -91,6 +93,9 @@ void CGameWorld::Init()
 
 	dl.Load("Rsrc/hotel_extV3.dl");
 
+	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, amb);
+    glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER, GL_TRUE);
+
 	float light_radius = 5.0f;
 
     for (int i = 0; i < 8; i++)
@@ -116,7 +121,7 @@ void CGameWorld::Update(int dT)
 
 void CGameWorld::Draw()
 {
-	glClearColor(0.0f, 0.5f, 0.5f, 1.0f);
+	glClearColor(fogColor[0], fogColor[1], fogColor[2], fogColor[3]);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	glMatrixMode(GL_PROJECTION);
@@ -130,18 +135,25 @@ void CGameWorld::Draw()
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
     glEnable(GL_TEXTURE_2D);
+	glEnable(GL_FOG);
     glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
     glColor3d(1.0f, 1.0f, 1.0f);
 
-	//m_player->UpdateCamera();
-	m_player->m_position.z += -0.01f;
-	m_player->m_position.x += 0.001f;
+	glFogi(GL_FOG_MODE, GL_LINEAR);
+	glFogfv(GL_FOG_COLOR, fogColor);
+	glFogf(GL_FOG_DENSITY, 0.1f);
+	glFogf(GL_FOG_START, 16.0f);
+	glFogf(GL_FOG_END, 64.0f);
 
-	gluLookAt(
-        m_player->m_position.x, 3, -m_player->m_position.z,
-        0,0,0,
-        0, 1, 0);
+	m_player->UpdateCamera();
+	//m_player->m_position.z += -0.01f;
+	//m_player->m_position.x += 0.001f;
+
+	//gluLookAt(
+    //    m_player->m_position.x, 3, -m_player->m_position.z,
+    //    0,0,0,
+    //    0, 1, 0);
 	
 	/*
 	glPushMatrix();
@@ -162,9 +174,9 @@ void CGameWorld::Draw()
 	glPopMatrix();*/
 	
 	glPushMatrix();
-	//glEnable(GL_LIGHTING);
+	glEnable(GL_LIGHTING);
 	glTranslatef(0, -1, 0);
-	glScalef(0.1f,0.1f,0.1f);
+	glScalef(0.5f,0.5f,0.5f);
 	//glScalef(3,3,3);
 	dl.Draw();
 	glPopMatrix();

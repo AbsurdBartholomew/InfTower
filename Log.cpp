@@ -5,6 +5,7 @@
 #include "Log.h"
 #include <windows.h>
 #include <stdarg.h>
+#include <time.h>
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -37,7 +38,18 @@ bool Log::SetLogOutPath(const char *path)
 void Log::Print(const char *fmt, ...)
 {
 	char str[512];
+	char *fuck; // temporary asctime string needed to remove the fucking newline
+	int fuckIndex;
+	time_t rawTime;
+	tm *timeInfo;
     va_list argp;
+
+	time(&rawTime);
+	timeInfo = localtime(&rawTime);
+	fuck = asctime(timeInfo);
+	fuckIndex = strlen(fuck) - 1;
+
+	memmove(&fuck[fuckIndex], &fuck[fuckIndex + 1], fuckIndex - 1);
 
     va_start(argp, fmt);
 
@@ -45,8 +57,7 @@ void Log::Print(const char *fmt, ...)
     printf("%s\n", str);
 	if(m_fp != NULL)
 	{
-		// TODO: timestamps would be nice...
-		fprintf(m_fp, str);
+		fprintf(m_fp, "%s: %s", fuck, str);
 	}
 
     va_end(argp);

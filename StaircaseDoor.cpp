@@ -19,12 +19,13 @@ CStaircaseDoor::~CStaircaseDoor()
 
 }
 
-bool CStaircaseDoor::Check()
+bool CStaircaseDoor::Check(void* data)
 {
-	return false;
+	return GetIsInRange(*(Vector3*)data);
 }
 
 void CStaircaseDoor::Action()
 {
-	MessageBox(NULL, "I was pressed and there was a line here which I cannot remember", "Soooo", MB_OK);
+	MessageBox(NULL, "The stairs", "The Stairs", MB_OK);
+	MessageBox(NULL, "call to you...", "The Stairs", MB_OK);
 }

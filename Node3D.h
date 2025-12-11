@@ -59,6 +59,9 @@ public:
 
 	Vector3 m_velocity;
 
+	bool m_isVisible;
+	bool m_canCollide;
+
 	CDisplayList m_list;
 
 	static CNode3D *New() { return new CNode3D(); }

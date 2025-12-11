@@ -91,7 +91,15 @@ LINK32=link.exe
 # PROP Default_Filter "cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
 # Begin Source File
 
+SOURCE=.\AVIPlayer.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\Bitmap.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\Concierge.cpp
 # End Source File
 # Begin Source File
 
@@ -104,6 +112,10 @@ SOURCE=.\Floor.cpp
 # Begin Source File
 
 SOURCE=.\GameWorld.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\Input.cpp
 # End Source File
 # Begin Source File
 
@@ -155,7 +167,15 @@ SOURCE=.\Vector3.cpp
 # PROP Default_Filter "h;hpp;hxx;hm;inl"
 # Begin Source File
 
+SOURCE=.\AVIPlayer.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\Bitmap.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Concierge.h
 # End Source File
 # Begin Source File
 
@@ -172,6 +192,10 @@ SOURCE=.\GameWorld.h
 # Begin Source File
 
 SOURCE=.\Hash.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Input.h
 # End Source File
 # Begin Source File
 
