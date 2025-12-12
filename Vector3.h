@@ -11,6 +11,11 @@
 
 #include <math.h>
 
+inline float lerp(float start, float goal, float percent)
+{
+	return start + (percent * 0.3f) * (goal - start);
+}
+
 struct Vector3
 {
 	float x;

@@ -174,7 +174,7 @@ STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "The Concierge"
 FONT 8, "MS Sans Serif"
 BEGIN
-    DEFPUSHBUTTON   "OK",IDOK,130,55,50,14,WS_DISABLED
+    DEFPUSHBUTTON   "OK",IDOK,130,55,50,14
     LTEXT           "Okay. Just let me get your information. And your name is...?",
                     IDC_STATIC,3,5,186,8
     EDITTEXT        IDC_EDIT1,5,25,180,19,ES_AUTOHSCROLL
@@ -249,6 +249,7 @@ IDI_ICON1               ICON    DISCARDABLE     "icon1.ico"
 IDR_ACCELERATOR1 ACCELERATORS DISCARDABLE 
 BEGIN
     "E",            IDS_EDITOR,             VIRTKEY, NOINVERT
+    "O",            IDS_LOADGAME,           VIRTKEY, CONTROL, NOINVERT
     "S",            IDS_SAVE,               VIRTKEY, CONTROL, NOINVERT
 END
 

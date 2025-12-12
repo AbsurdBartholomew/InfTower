@@ -23,6 +23,7 @@ public:
 protected:
 	static UINT m_msg;
 	static WPARAM m_wParam;
+	static bool m_keys[256];
 };
 
 #endif // !defined(AFX_INPUT_H__E0DFD4DB_A066_48C5_9FD1_938656A241CA__INCLUDED_)

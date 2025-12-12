@@ -123,7 +123,7 @@ void CDisplayList::Load(const char *filePath)
 	for(int t = 0; t < m_triCount; t++)
 	{
 		glNormal3f(m_tris[t].Normal.x, m_tris[t].Normal.y, m_tris[t].Normal.z);
-        glTexCoord2f(m_tris[t].UV.x, -m_tris[t].UV.y);
+        glTexCoord2f(m_tris[t].UV.x, m_tris[t].UV.y);
         glVertex3f(m_tris[t].Vtx.x, m_tris[t].Vtx.y, m_tris[t].Vtx.z);
 	}
 
@@ -173,8 +173,13 @@ void CDisplayList::LoadTexture()
 
 	for (int b = 0; b < m_bitmap.bmWidth * m_bitmap.bmHeight ; b++)
     {
-		B = m_data[b*3]; G = m_data[b*3+1]; R = m_data[b*3+2];
-		m_data[b*3] = R; m_data[b*3+1] = G; m_data[b*3+2] = B;
+		B = m_data[b*3]; 
+		G = m_data[b*3+1]; 
+		R = m_data[b*3+2];
+
+		m_data[b*3] = R; 
+		m_data[b*3+1] = G; 
+		m_data[b*3+2] = B;
     }
 
 	glGenTextures(1, &m_texture);

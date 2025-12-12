@@ -24,6 +24,8 @@ public:
 	void Update(int dT);
 	void Draw();
 
+	void InitEditor(HWND parent, HINSTANCE instance);
+
 	HDC m_hdc;
 	HWND m_hwnd;
 

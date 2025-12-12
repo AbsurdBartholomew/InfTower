@@ -19,6 +19,9 @@ public:
 	
 	bool Check(void* data);
 	void Action();
+
+private:
+	bool m_sawMessage;
 };
 
 #endif // !defined(AFX_STAIRCASEDOOR_H__92C0A620_FFEB_4544_B6BA_6CF49C0DED87__INCLUDED_)

@@ -13,23 +13,78 @@
 #include "Log.h"
 #include "Input.h"
 
+#define TARGET_FPS 60
+
 HDC hDC;
 HPALETTE hPalette = NULL;
 TCHAR winTitle[32];
 CGameWorld *gameWorld;
+HWND currentHWnd;
+bool fullscreen;
+INT64 QPCFrequency;
+HBITMAP palHbmp;
+BITMAP palBitmap;
+
+#ifdef _EDITOR
+bool editorInvoked;
+#endif
+
+inline INT64 ElapsedMicroseconds(INT64 startCount, INT64 endCount)
+{
+    INT64 elapsedMicroseconds = endCount - startCount;
+    elapsedMicroseconds *= 1000000;
+    elapsedMicroseconds /= QPCFrequency;
+    return elapsedMicroseconds;
+}
 
 LONG WINAPI WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	static PAINTSTRUCT ps;
+	int i;
 
 	CInput::m_msg = uMsg;
 	CInput::m_wParam = wParam;
 
 	switch(uMsg)
 	{
+	case WM_COMMAND:
+		switch(LOWORD(wParam))
+		{
+		case IDS_SAVE:
+			Log::Print("Save called...\n");
+			break;
+		case IDS_EDITOR:
+#ifdef _EDITOR
+			if(fullscreen == false)
+			{
+				Log::Print("Editor Invoked\n");
+				gameWorld->InitEditor(currentHWnd, GetModuleHandle(NULL));
+
+				editorInvoked = true;
+			} else Log::Print("Editor was invoked but the game has to be running in windowed mode for it to work. Continuing normally...\n");
+#endif
+			break;
+		case IDS_LOADGAME:
+			Log::Print("Load game called...\n");
+			break;
+		}
+		return 0;
+
+	case WM_KEYDOWN:
+		CInput::m_keys[wParam] = true;
+		return 0;
+	case WM_KEYUP:
+		CInput::m_keys[wParam] = false;
+		return 0;
 	case WM_PAINT:
 		BeginPaint(hWnd, &ps);
 		EndPaint(hWnd, &ps);
+		return 0;
+	case WM_ACTIVATE:
+		for(i = 0; i < 256; i++)
+		{
+			CInput::m_keys[i] = false; // inputs get stuck after dialogs open
+		}
 		return 0;
 	case WM_SIZE:
 		glViewport(0, 0, LOWORD(lParam), HIWORD(lParam));
@@ -51,6 +106,13 @@ HWND MakeWindow(const char *title, int x, int y, int w, int h)
     PIXELFORMATDESCRIPTOR pfd;
     static HINSTANCE hInstance = 0;
 	WNDCLASS    wc;
+	DWORD exStyle;
+	DWORD style;
+	RECT wRect;
+	wRect.left = 0;
+	wRect.right = w;
+	wRect.top = 0;
+	wRect.bottom = h;
 	
 	if (!hInstance) {
 	hInstance = GetModuleHandle(NULL);
@@ -72,8 +134,32 @@ HWND MakeWindow(const char *title, int x, int y, int w, int h)
 	}
     }
 
-	hWnd = CreateWindow("InfTower", title, WS_OVERLAPPEDWINDOW |
-			WS_CLIPSIBLINGS | WS_CLIPCHILDREN,
+	if(fullscreen)
+	{
+		DEVMODE screenSettings;
+		memset(&screenSettings, 0, sizeof(screenSettings));
+		screenSettings.dmSize = sizeof(screenSettings);
+		screenSettings.dmPelsWidth = 640;
+		screenSettings.dmPelsHeight = 480;
+		screenSettings.dmBitsPerPel = 32;
+		screenSettings.dmFields=DM_BITSPERPEL | DM_PELSWIDTH | DM_PELSHEIGHT;
+
+		if(ChangeDisplaySettings(&screenSettings, CDS_FULLSCREEN) != DISP_CHANGE_SUCCESSFUL)
+		{
+			exit(EXIT_FAILURE);
+		}
+
+		exStyle = WS_EX_APPWINDOW;
+		style = WS_POPUP;
+	} else
+	{
+		exStyle = WS_EX_APPWINDOW | WS_EX_WINDOWEDGE;
+		style = WS_OVERLAPPEDWINDOW;
+	}
+
+	AdjustWindowRectEx(&wRect, style, FALSE, exStyle);
+
+	hWnd = CreateWindowEx(exStyle, "InfTower", title, style,
 			x, y, w, h, NULL, NULL, hInstance, NULL);
 
     if (hWnd == NULL) {
@@ -90,7 +176,8 @@ HWND MakeWindow(const char *title, int x, int y, int w, int h)
     pfd.nSize        = sizeof(pfd);
     pfd.nVersion     = 1;
     pfd.dwFlags      = PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER;
-    pfd.iPixelType   = PFD_TYPE_RGBA;
+	//if(fullscreen == false) pfd.iPixelType = PFD_TYPE_RGBA; else pfd.iPixelType = PFD_TYPE_COLORINDEX;
+	pfd.iPixelType = PFD_TYPE_RGBA; // unlikely i can get CI working :(
     pfd.cColorBits   = 32;
 
 	pf = ChoosePixelFormat(hDC, &pfd);
@@ -143,6 +230,7 @@ HWND MakeWindow(const char *title, int x, int y, int w, int h)
 			lpPal->palPalEntry[i].peFlags = 0;
 			}
 		} else {
+			/*
 			lpPal->palPalEntry[0].peRed = 0;
 			lpPal->palPalEntry[0].peGreen = 0;
 			lpPal->palPalEntry[0].peBlue = 0;
@@ -158,7 +246,20 @@ HWND MakeWindow(const char *title, int x, int y, int w, int h)
 			lpPal->palPalEntry[3].peRed = 0;
 			lpPal->palPalEntry[3].peGreen = 0;
 			lpPal->palPalEntry[3].peBlue = 255;
-			lpPal->palPalEntry[3].peFlags = PC_NOCOLLAPSE;
+			lpPal->palPalEntry[3].peFlags = PC_NOCOLLAPSE;*/
+
+			palHbmp = (HBITMAP)LoadImage(NULL, "tower.bmp", IMAGE_BITMAP, 0, 0, LR_CREATEDIBSECTION | LR_LOADFROMFILE);
+			GetObject(palHbmp, sizeof(BITMAP), &palBitmap);
+
+			unsigned char *bData = (unsigned char*)palBitmap.bmBits;
+
+			for(int i = 0; i < n; i++)
+			{
+				lpPal->palPalEntry[i].peRed = bData[i*3];
+				lpPal->palPalEntry[i].peGreen = bData[i*3 + 1];
+				lpPal->palPalEntry[i].peBlue = bData[i*3 + 2];
+				lpPal->palPalEntry[i].peFlags = PC_EXPLICIT;
+			}
 		}
 
 		hPalette = CreatePalette(lpPal);
@@ -167,7 +268,7 @@ HWND MakeWindow(const char *title, int x, int y, int w, int h)
 			RealizePalette(hDC);
 		}
 
-		//free(lpPal);
+		free(lpPal);
     }
 
     ReleaseDC(hWnd, hDC);
@@ -186,9 +287,27 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	HACCEL hAccelTable;
 	DWORD bufferType = PFD_DOUBLEBUFFER;
 	BYTE color = PFD_TYPE_COLORINDEX;
-	CDisplayList *testDL;
+	RECT rc;
+
+	INT32 frameCount = 0;
+    INT64 frameStart = 0, frameEnd = 0;
+    INT64 averageFPS = 0, ticksAccumulator = 0;
+
+    INT64 elapsedTime, overSleepDuration = 0;
+    const INT64 TARGET_FRAME_TIME = (1000000 / TARGET_FPS) + 1;
+
+	QueryPerformanceFrequency((LARGE_INTEGER*)&QPCFrequency);
 
 	LoadString(hInstance, IDS_WINDOW_TITLE, winTitle, 32);
+
+#ifdef _DEBUG
+	if(MessageBox(NULL, "Would you like to run in fullscreen?", "Debug Only", MB_YESNO|MB_ICONQUESTION) == IDNO)
+	{
+		fullscreen = false;
+	} else fullscreen = true;
+#else
+	fullscreen = true;
+#endif
 
 	hWnd = MakeWindow(winTitle, 0, 0, 640, 480);
 	if(hWnd == NULL) exit(EXIT_FAILURE);
@@ -199,6 +318,14 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 
 	ShowWindow(hWnd, SW_SHOW);
 	UpdateWindow(hWnd);
+
+	GetWindowRect (hWnd, &rc) ;
+	int xPos = (GetSystemMetrics(SM_CXSCREEN) - rc.right)/2;
+	int yPos = (GetSystemMetrics(SM_CYSCREEN) - rc.bottom)/2;
+
+	SetWindowPos(hWnd, 0, xPos, yPos, 0, 0, SWP_NOZORDER | SWP_NOSIZE);
+
+	currentHWnd = hWnd;
 
 	hAccelTable = LoadAccelerators(hInstance, (LPCTSTR)IDR_ACCELERATOR1);
 	//testDL = new CDisplayList();
@@ -239,7 +366,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		if( bGotMsg )
         {
 			// Translate and dispatch the message
-            if( 0 == TranslateAccelerator( hWnd, NULL, &msg ) )
+            if( 0 == TranslateAccelerator( hWnd, hAccelTable, &msg ) )
 			{
 				TranslateMessage( &msg );
 				DispatchMessage( &msg );
@@ -253,6 +380,41 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 				gameWorld->Draw();
 
 				SwapBuffers(hDC);
+				
+				// Limit framerate
+				QueryPerformanceCounter((LARGE_INTEGER*)&frameEnd);
+				elapsedTime = ElapsedMicroseconds(frameStart, frameEnd);
+
+				while (elapsedTime < TARGET_FRAME_TIME)
+				{
+				    if ((elapsedTime + overSleepDuration) >= TARGET_FRAME_TIME)
+				    {
+				       overSleepDuration -= TARGET_FRAME_TIME - elapsedTime;
+				        break;
+				  }
+
+				  Sleep(1);
+
+				 QueryPerformanceCounter((LARGE_INTEGER*)&frameEnd);
+				 elapsedTime = ElapsedMicroseconds(frameStart, frameEnd);
+
+				 if (elapsedTime > TARGET_FRAME_TIME)
+				     overSleepDuration += elapsedTime - TARGET_FRAME_TIME;
+			 }
+
+
+			 QueryPerformanceCounter((LARGE_INTEGER*)&frameEnd);
+			 ticksAccumulator += frameEnd - frameStart;
+			 frameCount += 1;
+
+			 if ((frameCount % TARGET_FPS) == 0)
+			 {
+				   averageFPS = ((QPCFrequency * TARGET_FPS) + (ticksAccumulator - 1)) / ticksAccumulator; // round-off
+				   ticksAccumulator = 0;
+				   frameCount = 0;
+				}
+
+			 frameStart = frameEnd;
 		}
     }
 

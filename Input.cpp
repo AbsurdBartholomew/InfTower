@@ -10,6 +10,7 @@
 
 UINT CInput::m_msg;
 WPARAM CInput::m_wParam;
+bool CInput::m_keys[256];
 
 CInput::CInput()
 {
@@ -23,7 +24,6 @@ CInput::~CInput()
 
 bool CInput::IsKeyHeld(WPARAM param)
 {
-	if(m_msg != WM_KEYDOWN) return false;
-	if(m_wParam == param) return true;
-	return false;
+	//if(m_msg != WM_KEYDOWN) return false;
+	return m_keys[param];
 }

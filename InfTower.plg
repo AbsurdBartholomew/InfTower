@@ -3,70 +3,71 @@
 <pre>
 <h1>Build Log</h1>
 <h3>
---------------------Configuration: InfTower - Win32 Debug--------------------
+--------------------Configuration: InfTower - Win32 Release--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\Users\SILLYB~1\AppData\Local\Temp\RSP8DCB.tmp" with contents
+Creating temporary file "C:\Users\SILLYB~1\AppData\Local\Temp\RSPB61C.tmp" with contents
 [
-/nologo /MLd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /FR"Debug/" /Fp"Debug/InfTower.pch" /YX /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
+/nologo /ML /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /Fp"Release/InfTower.pch" /YX /Fo"Release/" /Fd"Release/" /FD /c 
+"E:\project7\InfTower\VcSrc\Concierge.cpp"
+"E:\project7\InfTower\VcSrc\DisplayList.cpp"
+"E:\project7\InfTower\VcSrc\Floor.cpp"
 "E:\project7\InfTower\VcSrc\GameWorld.cpp"
+"E:\project7\InfTower\VcSrc\Interactive.cpp"
+"E:\project7\InfTower\VcSrc\main.cpp"
+"E:\project7\InfTower\VcSrc\Node3D.cpp"
+"E:\project7\InfTower\VcSrc\Player.cpp"
+"E:\project7\InfTower\VcSrc\StaircaseDoor.cpp"
+"E:\project7\InfTower\VcSrc\Vector3.cpp"
+"E:\project7\InfTower\VcSrc\SodaMachine.cpp"
 ]
-Creating command line "cl.exe @C:\Users\SILLYB~1\AppData\Local\Temp\RSP8DCB.tmp" 
-Creating temporary file "C:\Users\SILLYB~1\AppData\Local\Temp\RSP8DCC.tmp" with contents
+Creating command line "cl.exe @C:\Users\SILLYB~1\AppData\Local\Temp\RSPB61C.tmp" 
+Creating temporary file "C:\Users\SILLYB~1\AppData\Local\Temp\RSPB61D.tmp" with contents
 [
-kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib opengl32.lib glu32.lib winmm.lib /nologo /subsystem:windows /incremental:yes /pdb:"Debug/InfTower.pdb" /debug /machine:I386 /out:"Debug/InfTower.exe" /pdbtype:sept 
-.\Debug\AVIPlayer.obj
-.\Debug\Bitmap.obj
-.\Debug\Concierge.obj
-.\Debug\DisplayList.obj
-.\Debug\Floor.obj
-.\Debug\GameWorld.obj
-.\Debug\Input.obj
-.\Debug\Interactive.obj
-.\Debug\Log.obj
-.\Debug\main.obj
-.\Debug\MidiPlayer.obj
-.\Debug\Node.obj
-.\Debug\Node3D.obj
-.\Debug\Player.obj
-.\Debug\Rsrc.obj
-.\Debug\StaircaseDoor.obj
-.\Debug\Vector3.obj
-.\Debug\res.res
+kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib opengl32.lib glu32.lib winmm.lib /nologo /subsystem:windows /incremental:no /pdb:"Release/InfTower.pdb" /machine:I386 /out:"Content/InfTower.exe" 
+.\Release\AVIPlayer.obj
+.\Release\Bitmap.obj
+.\Release\Concierge.obj
+.\Release\DisplayList.obj
+.\Release\Floor.obj
+.\Release\GameGlobals.obj
+.\Release\GameWorld.obj
+.\Release\Input.obj
+.\Release\Interactive.obj
+.\Release\Log.obj
+.\Release\main.obj
+.\Release\MidiPlayer.obj
+.\Release\Node.obj
+.\Release\Node3D.obj
+.\Release\Player.obj
+.\Release\Rsrc.obj
+.\Release\StaircaseDoor.obj
+.\Release\Vector3.obj
+.\Release\res.res
+.\Release\SodaMachine.obj
 ]
-Creating command line "link.exe @C:\Users\SILLYB~1\AppData\Local\Temp\RSP8DCC.tmp"
+Creating command line "link.exe @C:\Users\SILLYB~1\AppData\Local\Temp\RSPB61D.tmp"
 <h3>Output Window</h3>
 Compiling...
+Concierge.cpp
+DisplayList.cpp
+Floor.cpp
 GameWorld.cpp
+E:\project7\InfTower\VcSrc\GameWorld.cpp(277) : warning C4305: 'argument' : truncation from 'const double' to 'float'
+E:\project7\InfTower\VcSrc\GameWorld.cpp(278) : warning C4305: 'argument' : truncation from 'const double' to 'float'
+Interactive.cpp
+main.cpp
+Node3D.cpp
+Player.cpp
+StaircaseDoor.cpp
+Vector3.cpp
+SodaMachine.cpp
 Linking...
-Creating temporary file "C:\Users\SILLYB~1\AppData\Local\Temp\RSP8E4A.tmp" with contents
-[
-/nologo /o"Debug/InfTower.bsc" 
-.\Debug\AVIPlayer.sbr
-.\Debug\Bitmap.sbr
-.\Debug\Concierge.sbr
-.\Debug\DisplayList.sbr
-.\Debug\Floor.sbr
-.\Debug\GameWorld.sbr
-.\Debug\Input.sbr
-.\Debug\Interactive.sbr
-.\Debug\Log.sbr
-.\Debug\main.sbr
-.\Debug\MidiPlayer.sbr
-.\Debug\Node.sbr
-.\Debug\Node3D.sbr
-.\Debug\Player.sbr
-.\Debug\Rsrc.sbr
-.\Debug\StaircaseDoor.sbr
-.\Debug\Vector3.sbr]
-Creating command line "bscmake.exe @C:\Users\SILLYB~1\AppData\Local\Temp\RSP8E4A.tmp"
-Creating browse info file...
-<h3>Output Window</h3>
 
 
 
 <h3>Results</h3>
-InfTower.exe - 0 error(s), 0 warning(s)
+InfTower.exe - 0 error(s), 2 warning(s)
 </pre>
 </body>
 </html>

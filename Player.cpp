@@ -13,6 +13,8 @@
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
+CGameGlobals CPlayer::globals;
+
 inline float rad2deg(float rad)
 {
 	return rad * (180.0f / 3.14159);
@@ -34,8 +36,12 @@ CPlayer::CPlayer()
 
 	m_currentWalkSpeed = 0.0f;
 	m_angle = 0.0f;
+	m_verticalLookOffset = 0.0f;
 
 	Log::Print("I'm at %f %f %f\n", m_position.x, m_position.y, m_position.z);
+
+	globals.Serialize("SaveData.glb");
+	Log::Print("My name is %s\n", globals.m_name);
 }
 
 CPlayer::~CPlayer()
@@ -45,12 +51,12 @@ CPlayer::~CPlayer()
 
 void CPlayer::UpdateCamera()
 {
-	float walkOffset = sin(m_walkFrames / 16) / 4;
+	float walkOffset = sin(m_walkFrames / 6) / 4;
 	glLoadIdentity();
 
 	gluLookAt(
         0, 0, 0,
-        0,0,-15,
+        0,m_verticalLookOffset,-15,
         0, 1, 0);
 	glRotatef(rad2deg(m_angle), 0, 1, 0);
 	glTranslatef(-m_position.x, -(m_position.y + 3) + walkOffset, -m_position.z);
@@ -101,12 +107,17 @@ void CPlayer::Serialize(const char *filePath)
 }
 
 const float MAX_SPEED = 0.05f;
-const float SPEEDUP = 0.001f;
+const float SPEEDUP = 0.008f;
 
 void CPlayer::Update(int dT)
 {
-	m_velocity.x *= 0.95f;
-	m_velocity.z *= 0.95f;
+	m_velocity.x *= 0.92f;
+	m_velocity.z *= 0.92f;
+
+	if(CInput::IsKeyHeld(VK_HOME))
+	{
+		Log::Print("Position is %f %f %f\n", m_position.x, m_position.y, m_position.z);
+	}
 
 	if(CInput::IsKeyHeld(VK_UP))
 	{
@@ -130,9 +141,13 @@ void CPlayer::Update(int dT)
 
 	m_currentWalkSpeed -= SPEEDUP;
 	if(m_currentWalkSpeed < 0) m_currentWalkSpeed = 0;
+
+	if((int)m_walkFrames % 30 == 0 && m_walkFrames > 0)
+	{
+		PlaySound("Rsrc/step.wav", NULL, SND_ASYNC);
+	}
 	
 	CollideAndSlide();
-	//m_position += m_velocity;
 }
 
 void CPlayer::MoveForward()
@@ -157,12 +172,12 @@ void CPlayer::MoveBack()
 
 void CPlayer::MoveLeft()
 {
-	m_angle -= 0.01f;
+	m_angle -= 0.03f;
 }
 
 void CPlayer::MoveRight()
 {
-	m_angle += 0.01f;
+	m_angle += 0.03f;
 }
 
 void CPlayer::Jump()

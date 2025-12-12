@@ -8,13 +8,143 @@
 #include <GL/glu.h>
 #include "MidiPlayer.h"
 #include "DisplayList.h"
+#include "StaircaseDoor.h"
+#include "Concierge.h"
+#include "SodaMachine.h"
+#include "resource.h"
+#include "Log.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
+#ifdef _EDITOR
+static int splashFrames = 0;
+extern bool editorInvoked;
+WNDCLASSEX splashWc;
+HWND splashHWnd;
+HBITMAP bmp;
+HBRUSH brush;
+
+LRESULT CALLBACK SplashProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
+{
+	PAINTSTRUCT ps;
+	HDC hdc;
+
+    switch(msg)
+    {
+	case WM_INITDIALOG:
+			SetTimer( hWnd, 1000, 1000, NULL );
+			break;
+	case WM_PAINT:
+			hdc = BeginPaint(hWnd, &ps);
+			// TODO: Add any drawing code here...
+			RECT rt;
+			GetClientRect(hWnd, &rt);
+
+			brush = CreatePatternBrush(bmp);
+			FillRect(hdc, &rt, brush);
+
+			DeleteObject(brush);
+			EndPaint(hWnd, &ps);
+
+		break;
+        case WM_CLOSE:
+            DestroyWindow(splashHWnd);
+        break;
+        case WM_DESTROY:
+            PostQuitMessage(0);
+		case WM_TIMER:
+			if(wParam == 1000) InvalidateRect(hWnd, NULL, FALSE);
+        break;
+        default:
+            return DefWindowProc(hWnd, msg, wParam, lParam);
+    }
+    return 0;
+}
+
+void CreateSplash(HWND parent, HINSTANCE instance)
+{
+	RECT rc;
+
+	MSG Msg;
+
+	if(splashWc.cbSize == 0)
+	{
+		splashWc.cbSize = sizeof(WNDCLASSEX);
+		splashWc.style = 0;
+		splashWc.lpfnWndProc = SplashProc;
+		splashWc.cbClsExtra = 0;
+		splashWc.cbWndExtra = 0;
+		splashWc.hInstance = instance;
+		splashWc.hIcon = LoadIcon(NULL, IDI_APPLICATION);
+		splashWc.hCursor = LoadCursor(NULL, IDC_ARROW);
+		splashWc.hbrBackground = (HBRUSH)(COLOR_WINDOW+1);
+		splashWc.lpszMenuName = NULL;
+		splashWc.lpszClassName = "Splash";
+		splashWc.hIconSm = LoadIcon(NULL, IDI_APPLICATION);
+
+		if(!RegisterClassEx(&splashWc))
+		{
+			MessageBox(NULL, "Window Registration Failed!", "Error!",
+				MB_ICONEXCLAMATION | MB_OK);
+			return;
+		}
+	}
+
+	splashHWnd = CreateWindowEx(
+		WS_EX_TOPMOST,
+		"Splash",
+		"Splash",
+		WS_POPUPWINDOW,
+		CW_USEDEFAULT,
+		CW_USEDEFAULT,
+		640,
+		480,
+		parent,
+		NULL,
+		instance,
+		NULL);
+
+	if(splashHWnd == NULL)
+    {
+        MessageBox(NULL, "Window Creation Failed!", "Error!",
+            MB_ICONEXCLAMATION | MB_OK);
+		return;
+    }
+
+	GetWindowRect (splashHWnd, &rc) ;
+	int xPos = (GetSystemMetrics(SM_CXSCREEN) - rc.right)/2;
+	int yPos = (GetSystemMetrics(SM_CYSCREEN) - rc.bottom)/2;
+
+	SetWindowPos(splashHWnd, 0, xPos, yPos, 0, 0, SWP_NOZORDER | SWP_NOSIZE);
+
+	bmp = (HBITMAP)LoadImage(GetModuleHandle(NULL), MAKEINTRESOURCE(IDB_BITMAP1), IMAGE_BITMAP, 0, 0, LR_DEFAULTCOLOR);
+
+	ShowWindow(splashHWnd, SW_SHOWNORMAL);
+	UpdateWindow(splashHWnd);
+
+	while(WM_QUIT != Msg.message)
+    {
+		if(PeekMessage(&Msg, NULL, 0, 0, PM_REMOVE))
+		{
+			TranslateMessage(&Msg);
+			DispatchMessage(&Msg);
+		} else
+		{
+			splashFrames++;
+			if(splashFrames >= 3 * 60000000)
+			{
+				DestroyWindow(splashHWnd);
+				splashFrames = 0;
+			}
+		}
+    }
+}
+#endif
+
 float aspect_ratio;
-float near_plane = 1.0f;
+float near_plane = 0.2f;
 float far_plane = 50000.0f;
 
 static const GLfloat light_pos[8][4] = {
@@ -44,9 +174,12 @@ GLfloat fogColor[4] = {0.8f, 0.8f, 0.9f, 1.0f};
 const int BUILDING_RAND_POS_MIN = -4;
 const int BUILDING_RAND_POS_MAX = 4;
 
-static const GLfloat amb[] = { (float)0.5f, (float)0.5f, (float)0.5f, 1.f };
+static const GLfloat amb[] = { (float)0.9f, (float)0.9f, (float)0.9f, 1.f };
 
 CDisplayList dl;
+CStaircaseDoor tempDoor;
+CConcierge conc;
+CSodaMachine machine;
 
 static const GLfloat environment_color[] = { (float)0.0f, (float)128/255.0f, (float)128/255.0f, 1.f };
 
@@ -70,7 +203,18 @@ void CGameWorld::Init()
 	}*/
 
 	m_player = new CPlayer();
+	m_player->m_position = Vector3(0.0f, 0.0f, 83.0f);
 	AddChild(m_player);
+	
+	tempDoor.m_position = Vector3(25.110859f, 0.0f, 24.607515f);
+	tempDoor.m_range = 5.0f;
+
+	conc.m_position = Vector3(-0.384541f, 0.0f, 23.603014f);
+	machine.m_position = Vector3(-25.187f, 0.0f, 8.249f);
+
+	AddChild(&tempDoor);
+	AddChild(&conc);
+	AddChild(&machine);
 
 	glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
@@ -117,6 +261,21 @@ void CGameWorld::Update(int dT)
 	{
 		m_children[i]->InternalUpdate(dT);
 	}*/
+
+	if(tempDoor.Check(&m_player->m_position))
+	{
+		tempDoor.Action();
+	}
+
+	if(conc.Check(&m_player->m_position))
+	{
+		conc.Action();
+	}
+
+	if(machine.Check(&m_player->m_position))
+	{
+		m_player->m_verticalLookOffset = lerp(m_player->m_verticalLookOffset, -8.0f, 0.3);
+	} else m_player->m_verticalLookOffset = lerp(m_player->m_verticalLookOffset, 0.0f, 0.3);
 }
 
 void CGameWorld::Draw()
@@ -212,4 +371,13 @@ void CGameWorld::Draw()
 	}
 	
 	glFlush();
+}
+
+
+
+void CGameWorld::InitEditor(HWND parent, HINSTANCE instance)
+{
+#ifdef _EDITOR
+	CreateSplash(parent, instance);
+#endif
 }

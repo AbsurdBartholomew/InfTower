@@ -11,9 +11,10 @@
 
 #include "Rsrc.h"
 #include "DisplayList.h"
+#include "Node3D.h"
 #include <vector>
 
-class CFloor : public CRsrc  
+class CFloor : public CNode3D  
 {
 public:
 	CFloor();
@@ -29,7 +30,7 @@ public:
 	unsigned int GetResourceVersion() { return 0; }
 	const char *GetResourceExtension() { return ".flr"; }
 
-	std::vector<CDisplayList*> dls;
+	const char *m_nextFloorName;
 };
 
 #endif // !defined(AFX_FLOOR_H__49330625_4045_4E60_9B8F_A051C6644FC0__INCLUDED_)

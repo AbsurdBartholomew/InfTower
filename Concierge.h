@@ -19,6 +19,9 @@ public:
 	
 	bool Check(void* data);
 	void Action();
+
+private:
+	bool m_sawMessage;
 };
 
 #endif // !defined(AFX_CONCIERGE_H__C4A7ED38_DC08_4C58_8DF7_AD57EF9AB4A1__INCLUDED_)

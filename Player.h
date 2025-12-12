@@ -10,6 +10,7 @@
 #endif // _MSC_VER > 1000
 
 #include "Node3D.h"
+#include "GameGlobals.h"
 
 class CPlayer : public CNode3D  
 {
@@ -29,6 +30,10 @@ public:
 	const char *GetResourceName() { return "Player"; }
 	unsigned int GetResourceVersion() { return 0; }
 	const char *GetResourceExtension() { return ".ply"; }
+
+	static CGameGlobals globals;
+
+	float m_verticalLookOffset;
 
 private:
 	void MoveForward();
