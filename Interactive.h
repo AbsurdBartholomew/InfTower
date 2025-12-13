@@ -42,6 +42,8 @@ public:
 
 	bool m_showInteractionIcon;
 	bool m_active;
+
+	const char *GetResourceName() { return "Interactive"; }
 };
 
 #endif // !defined(AFX_INTERACTIVE_H__55AB947D_FCCB_478E_8766_9BAF15EA1488__INCLUDED_)

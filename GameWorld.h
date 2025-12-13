@@ -35,6 +35,9 @@ private:
 	CFloor *m_nextFloor;
 
 	CPlayer *m_player;
+#ifdef _EDITOR
+	void CreateEditorWindow(HWND parent, HINSTANCE instance);
+#endif
 };
 
 #endif // !defined(AFX_GAMEWORLD_H__D4013E79_94D0_42B7_ADF0_B2B6EC7BF98F__INCLUDED_)

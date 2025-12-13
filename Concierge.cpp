@@ -18,6 +18,7 @@
 
 CConcierge::CConcierge()
 {
+	m_name = GetResourceName();
 	m_range = 8.0f;
 	m_interactionIcon = ICON_TALK_TO;
 }
@@ -45,7 +46,6 @@ static bool DoNameEntry()
 void CConcierge::Action()
 {
 	m_sawMessage = true;
-	CMidiPlayer::playMIDIFile(currentHWnd, "Rsrc/frontdesk.mid");
 
 	MessageBox(currentHWnd, "Hey! How can I help you?", "The Concierge", MB_OK);
 	MessageBox(currentHWnd, "You're here for your room?", "The Concierge", MB_OK);
@@ -58,6 +58,8 @@ void CConcierge::Action()
 
 	CPlayer::globals.globals.SpokeToConcierge = true;
 	CPlayer::globals.Serialize("SaveData.glb");
+
+	CMidiPlayer::playMIDIFile(currentHWnd, "Rsrc/frontdesk.mid");
 
 	m_active = false;
 }

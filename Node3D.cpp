@@ -12,6 +12,8 @@ static bool hasRegistered = false;
 
 CNode3D::CNode3D()
 {
+	m_name = GetResourceName();
+
 	m_id = Hash((unsigned char*)GetResourceName());
 	printf("resource ID %s hashes to %d\n", GetResourceName(), m_id);
 	m_version = 0;

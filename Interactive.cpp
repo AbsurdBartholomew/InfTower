@@ -19,6 +19,7 @@ const char *iconPaths[NUM_INTERACTION_ICONS] = {
 
 CInteractive::CInteractive()
 {
+	m_name = GetResourceName();
 	m_range = 5.0f;
 	m_active = true;
 }

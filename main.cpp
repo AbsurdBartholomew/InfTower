@@ -4,6 +4,7 @@
 	Year: 2025					*/
 
 #include <windows.h>
+#include <Commctrl.h>
 #include <GL/gl.h>
 #include <stdio.h>
 #include "resource.h"
@@ -121,7 +122,7 @@ HWND MakeWindow(const char *title, int x, int y, int w, int h)
 	wc.cbClsExtra    = 0;
 	wc.cbWndExtra    = 0;
 	wc.hInstance     = hInstance;
-	wc.hIcon         = LoadIcon(NULL, MAKEINTRESOURCE(IDI_ICON1));
+	wc.hIcon         = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_ICON1));
 	wc.hCursor       = LoadCursor(NULL, IDC_ARROW);
 	wc.hbrBackground = NULL;
 	wc.lpszMenuName  = NULL;

@@ -11,7 +11,7 @@
 
 CNode::CNode()
 {
-
+	m_name = GetResourceName();
 }
 
 CNode::~CNode()

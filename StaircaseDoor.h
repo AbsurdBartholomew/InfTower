@@ -19,7 +19,8 @@ public:
 	
 	bool Check(void* data);
 	void Action();
-
+	
+	const char *GetResourceName() { return "StaircaseDoor"; }
 private:
 	bool m_sawMessage;
 };

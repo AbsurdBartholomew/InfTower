@@ -24,6 +24,8 @@ static bool hasRegistered = false;
 
 CPlayer::CPlayer()
 {
+	m_name = GetResourceName();
+
 	m_id = Hash((unsigned char*)GetResourceName());
 	printf("resource ID %s hashes to %d\n", GetResourceName(), m_id);
 	m_version = 0;

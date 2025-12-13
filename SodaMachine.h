@@ -19,6 +19,8 @@ public:
 	
 	bool Check(void* data);
 	void Action();
+
+	const char *GetResourceName() { return "SodaMachine"; }
 };
 
 #endif // !defined(AFX_SODAMACHINE_H__0014CF27_6A31_48D6_8AE3_ABA3757D6ECB__INCLUDED_)

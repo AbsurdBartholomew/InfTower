@@ -20,6 +20,8 @@ public:
 	bool Check(void* data);
 	void Action();
 
+	const char *GetResourceName() { return "Concierge"; }
+
 private:
 	bool m_sawMessage;
 };

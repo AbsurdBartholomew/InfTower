@@ -19,6 +19,8 @@
 //////////////////////////////////////////////////////////////////////
 
 #ifdef _EDITOR
+#include <Commctrl.h>
+
 static int splashFrames = 0;
 extern bool editorInvoked;
 WNDCLASSEX splashWc;
@@ -36,6 +38,8 @@ LRESULT CALLBACK SplashProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	case WM_INITDIALOG:
 			SetTimer( hWnd, 1000, 1000, NULL );
 			break;
+	case WM_LBUTTONDOWN:
+			DestroyWindow(hWnd);
 	case WM_PAINT:
 			hdc = BeginPaint(hWnd, &ps);
 			// TODO: Add any drawing code here...
@@ -50,13 +54,13 @@ LRESULT CALLBACK SplashProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
 		break;
         case WM_CLOSE:
-            DestroyWindow(splashHWnd);
+            DestroyWindow(hWnd);
         break;
-        case WM_DESTROY:
-            PostQuitMessage(0);
 		case WM_TIMER:
 			if(wParam == 1000) InvalidateRect(hWnd, NULL, FALSE);
         break;
+        case WM_DESTROY:
+            PostQuitMessage(0);
         default:
             return DefWindowProc(hWnd, msg, wParam, lParam);
     }
@@ -99,8 +103,8 @@ void CreateSplash(HWND parent, HINSTANCE instance)
 		WS_POPUPWINDOW,
 		CW_USEDEFAULT,
 		CW_USEDEFAULT,
-		640,
-		480,
+		177,
+		185,
 		parent,
 		NULL,
 		instance,
@@ -141,6 +145,111 @@ void CreateSplash(HWND parent, HINSTANCE instance)
 		}
     }
 }
+/**********************************************************************************************/
+// Editor
+
+WNDCLASSEX editWc;
+HWND editHWnd;
+HWND nodeTree;
+
+LRESULT CALLBACK EditorProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
+{
+	PAINTSTRUCT ps;
+	HDC hdc;
+
+    switch(msg)
+    {
+		case WM_PAINT:
+
+		break;
+        case WM_CLOSE:
+            DestroyWindow(splashHWnd);
+        break;
+
+        case WM_DESTROY:
+            PostQuitMessage(0);
+
+        default:
+            return DefWindowProc(hWnd, msg, wParam, lParam);
+    }
+    return 0;
+}
+
+void CGameWorld::CreateEditorWindow(HWND parent, HINSTANCE instance)
+{
+	RECT rc;
+
+	if(editWc.cbSize == 0)
+	{
+		editWc.cbSize = sizeof(WNDCLASSEX);
+		editWc.style = 0;
+		editWc.lpfnWndProc = EditorProc;
+		editWc.cbClsExtra = 0;
+		editWc.cbWndExtra = 0;
+		editWc.hInstance = instance;
+		editWc.hIcon = LoadIcon(NULL, IDI_APPLICATION);
+		editWc.hCursor = LoadCursor(NULL, IDC_ARROW);
+		editWc.hbrBackground = (HBRUSH)(COLOR_WINDOW+1);
+		editWc.lpszMenuName = NULL;
+		editWc.lpszClassName = "Editor";
+		editWc.hIconSm = LoadIcon(NULL, IDI_APPLICATION);
+
+		if(!RegisterClassEx(&editWc))
+		{
+			MessageBox(NULL, "Window Registration Failed!", "Error!",
+				MB_ICONEXCLAMATION | MB_OK);
+			return;
+		}
+	}
+
+	editHWnd = CreateWindowEx(0,
+		"Editor",
+		"Node List",
+		WS_OVERLAPPEDWINDOW | WS_VSCROLL,
+		CW_USEDEFAULT, CW_USEDEFAULT,
+		202, 478,
+		parent, NULL, instance, NULL);
+
+	if(editHWnd == NULL)
+    {
+        MessageBox(NULL, "Window Creation Failed!", "Error!",
+            MB_ICONEXCLAMATION | MB_OK);
+		return;
+    }
+	GetWindowRect (editHWnd, &rc) ;
+	int xPos = ((GetSystemMetrics(SM_CXSCREEN) - rc.right)/2) - 300;
+	int yPos = ((GetSystemMetrics(SM_CYSCREEN) - rc.bottom)/2) - -60;
+
+	nodeTree = CreateWindowEx(
+		WS_EX_CLIENTEDGE,
+		WC_TREEVIEW,
+		0,
+		WS_CHILD | WS_VISIBLE,
+		0, 0, 
+		rc.right, rc.bottom,
+		editHWnd, NULL, instance, NULL);
+
+
+	SetWindowPos(editHWnd, 0, xPos, yPos, 0, 0, SWP_NOZORDER | SWP_NOSIZE);
+
+	ShowWindow(editHWnd, SW_SHOWNORMAL);
+	UpdateWindow(editHWnd);
+
+	// Populate the list...
+	for(int i = 0; i < m_children.size(); i++)
+	{
+		TVITEM treeItem;
+		TVINSERTSTRUCT treeInsert;
+		HTREEITEM hti;
+
+		treeItem.mask = TVIF_TEXT | TVIF_IMAGE | TVIF_SELECTEDIMAGE | TVIF_PARAM;
+		treeItem.pszText = (char*)m_children[i]->m_name;
+		treeItem.cchTextMax = 32;
+
+		Log::Print("Adding item %s to tree\n", m_children[i]->m_name);
+	}
+}
+
 #endif
 
 float aspect_ratio;
@@ -233,7 +342,7 @@ void CGameWorld::Init()
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
-	CMidiPlayer::playMIDIFile(m_hwnd, "Rsrc/bob.mid");
+	//CMidiPlayer::playMIDIFile(m_hwnd, "Rsrc/bob.mid");
 
 	dl.Load("Rsrc/hotel_extV3.dl");
 
@@ -379,5 +488,6 @@ void CGameWorld::InitEditor(HWND parent, HINSTANCE instance)
 {
 #ifdef _EDITOR
 	CreateSplash(parent, instance);
+	CreateEditorWindow(parent, instance);
 #endif
 }

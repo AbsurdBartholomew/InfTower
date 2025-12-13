@@ -2,6 +2,7 @@
 //
 //////////////////////////////////////////////////////////////////////
 
+#include <windows.h>
 #include "SodaMachine.h"
 #include "Input.h"
 
@@ -11,6 +12,7 @@
 
 CSodaMachine::CSodaMachine()
 {
+	m_name = GetResourceName();
 	m_interactionIcon = ICON_GENERIC_INTERACTION;
 	m_range = 5.0f;
 }
@@ -33,5 +35,5 @@ bool CSodaMachine::Check(void* data)
 
 void CSodaMachine::Action()
 {
-	
+	PlaySound("Rsrc/button.wav", NULL, SND_ASYNC);
 }

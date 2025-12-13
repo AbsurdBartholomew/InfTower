@@ -17,6 +17,7 @@
 
 CFloor::CFloor()
 {
+	m_name = GetResourceName();
 	char d[16];
 	m_id = Hash((unsigned char*)GetResourceName());
 	printf("resource ID %s hashes to %d\n", GetResourceName(), m_id);

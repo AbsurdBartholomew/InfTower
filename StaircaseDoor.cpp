@@ -13,6 +13,7 @@
 
 CStaircaseDoor::CStaircaseDoor()
 {
+	m_name = GetResourceName();
 	m_interactionIcon = ICON_GENERIC_INTERACTION;
 }
 
