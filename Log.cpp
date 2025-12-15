@@ -31,6 +31,8 @@ bool Log::SetLogOutPath(const char *path)
 		MessageBox(NULL, "Couldn't create log", "Whoops", MB_OK);
 		return false;
 	}
+	Log::Print("Start of Log\n");
+	PrintLine();
 
 	return true;
 }
@@ -58,15 +60,29 @@ void Log::Print(const char *fmt, ...)
 	if(m_fp != NULL)
 	{
 		fprintf(m_fp, "%s: %s", fuck, str);
+		fflush(m_fp);
 	}
 
     va_end(argp);
+}
+
+void Log::PrintLine()
+{
+	printf("===============================================================\n");
+	if(m_fp != NULL)
+	{
+		fprintf(m_fp, "===============================================================\n");
+		fflush(m_fp);
+	}
 }
 
 void Log::CloseLogFile()
 {
 	if(m_fp != NULL)
 	{
+		PrintLine();
+		Print("End of Log\n");
+
 		fclose(m_fp);
 	}
 }

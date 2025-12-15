@@ -42,6 +42,12 @@ public:
 	virtual void Update(int dT);
 	virtual void Draw();
 
+	void CheckCollision(CCollisionPacket &packet);
+
+#ifdef _EDITOR
+	int GetPropertiesWindowID() { return IDD_P_NODE3D; }
+#endif
+
 	virtual void InternalUpdate(int dT)
 	{ 
 		for(int i = 0; i < m_children.size(); i++)
@@ -51,7 +57,7 @@ public:
 
 		Update(dT);
 	}
-	void CollideAndSlide();
+	virtual void CollideAndSlide();
 
 	Vector3 m_position;
 	Vector3 m_rotation;

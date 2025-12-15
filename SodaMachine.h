@@ -16,6 +16,8 @@ class CSodaMachine : public CInteractive
 public:
 	CSodaMachine();
 	virtual ~CSodaMachine();
+
+	void Init();
 	
 	bool Check(void* data);
 	void Action();

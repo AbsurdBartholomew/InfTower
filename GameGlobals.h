@@ -12,6 +12,14 @@
 #include "Rsrc.h"
 #include <string.h>
 
+enum ConciergeIntroState
+{
+	JUST_STARTED = 0, // the idea is that we can use this for any other state
+	SPOKE_TO_CONCIERGE,
+	SAW_THAT_ELEVATOR_WAS_BROKEN,
+	REPORTED_BACK,
+};
+
 class CGameGlobals : public CRsrc  
 {
 public:
@@ -32,8 +40,7 @@ public:
 	
 	struct GameGlobals
 	{
-		bool SpokeToConcierge;
-		bool ReportedBackToConciergeAfterElevatorBroke;
+		ConciergeIntroState introState;
 	} globals;
 };
 

@@ -56,7 +56,7 @@ void CConcierge::Action()
 	MessageBox(currentHWnd, "You might want to take the elevator for that.", "The Concierge", MB_OK);
 	MessageBox(currentHWnd, "Here's the key. Enjoy your stay!", "The Concierge", MB_OK);
 
-	CPlayer::globals.globals.SpokeToConcierge = true;
+	CPlayer::globals.globals.introState = SPOKE_TO_CONCIERGE;
 	CPlayer::globals.Serialize("SaveData.glb");
 
 	CMidiPlayer::playMIDIFile(currentHWnd, "Rsrc/frontdesk.mid");

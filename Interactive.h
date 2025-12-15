@@ -26,6 +26,10 @@ public:
 	virtual ~CInteractive();
 
 	void Draw();
+
+#ifdef _EDITOR
+	int GetPropertiesWindowID() { return IDD_P_INTERACTIVE; }
+#endif
 	
 	virtual bool Check(void* data) = 0;
 	virtual void Action() = 0;

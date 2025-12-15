@@ -154,8 +154,8 @@ HWND nodeTree;
 
 LRESULT CALLBACK EditorProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
-	PAINTSTRUCT ps;
-	HDC hdc;
+//	PAINTSTRUCT ps;
+	//HDC hdc;
 
     switch(msg)
     {
@@ -236,17 +236,48 @@ void CGameWorld::CreateEditorWindow(HWND parent, HINSTANCE instance)
 	UpdateWindow(editHWnd);
 
 	// Populate the list...
-	for(int i = 0; i < m_children.size(); i++)
+
+	HTREEITEM hPrev = (HTREEITEM)TVI_FIRST;
+	HTREEITEM hPrevRootItem = NULL;
+	HTREEITEM hPrevLev2Item = NULL;
+
+	for(int i = 0; i < allNodes.size(); i++)
 	{
 		TVITEM treeItem;
 		TVINSERTSTRUCT treeInsert;
 		HTREEITEM hti;
+		int level = allNodes[i]->m_level;
 
 		treeItem.mask = TVIF_TEXT | TVIF_IMAGE | TVIF_SELECTEDIMAGE | TVIF_PARAM;
-		treeItem.pszText = (char*)m_children[i]->m_name;
+		treeItem.pszText = (char*)allNodes[i]->m_name;
 		treeItem.cchTextMax = 32;
 
-		Log::Print("Adding item %s to tree\n", m_children[i]->m_name);
+		treeItem.lParam = (LPARAM)level;
+		treeInsert.item = treeItem;
+		treeInsert.hInsertAfter = hPrev;
+
+		if(level == 1) treeInsert.hParent = TVI_ROOT;
+		else if(level == 2) treeInsert.hParent = hPrevRootItem;
+		else treeInsert.hParent = hPrevLev2Item;
+
+		hPrev = (HTREEITEM)SendMessage(nodeTree, TVM_INSERTITEM, 0, (LPARAM)(LPTVINSERTSTRUCT)&treeInsert);
+
+		if(hPrev == NULL) return;
+
+		if(level == 1) hPrevRootItem = hPrev;
+		else if(level == 2) hPrevLev2Item = hPrev;
+
+		Log::Print("Adding item %s to tree\n", allNodes[i]->m_name);
+
+		if (level > 1)
+		{ 
+			hti = TreeView_GetParent(nodeTree, hPrev); 
+			treeItem.mask = TVIF_IMAGE | TVIF_SELECTEDIMAGE; 
+			treeItem.hItem = hti; 
+			//treeItem.iImage = g_nClosed; 
+			//treeItem.iSelectedImage = g_nClosed; 
+			TreeView_SetItem(nodeTree, &treeItem); 
+		} 
 	}
 }
 
@@ -286,6 +317,7 @@ const int BUILDING_RAND_POS_MAX = 4;
 static const GLfloat amb[] = { (float)0.9f, (float)0.9f, (float)0.9f, 1.f };
 
 CDisplayList dl;
+CDisplayList collision;
 CStaircaseDoor tempDoor;
 CConcierge conc;
 CSodaMachine machine;
@@ -295,7 +327,7 @@ static const GLfloat environment_color[] = { (float)0.0f, (float)128/255.0f, (fl
 
 CGameWorld::CGameWorld()
 {
-
+	m_level = 1;
 }
 
 CGameWorld::~CGameWorld()
@@ -312,7 +344,7 @@ void CGameWorld::Init()
 	}*/
 
 	m_player = new CPlayer();
-	m_player->m_position = Vector3(0.0f, 0.0f, 83.0f);
+	m_player->m_position = Vector3(0.0f, 1.0f, 83.0f);
 	AddChild(m_player);
 	
 	tempDoor.m_position = Vector3(25.110859f, 0.0f, 24.607515f);
@@ -342,9 +374,10 @@ void CGameWorld::Init()
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
-	//CMidiPlayer::playMIDIFile(m_hwnd, "Rsrc/bob.mid");
+	CMidiPlayer::playMIDIFile(m_hwnd, "Rsrc/bob.mid");
 
 	dl.Load("Rsrc/hotel_extV3.dl");
+	collision.Load("Rsrc/hotel_COL.dl");
 
 	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, amb);
     glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER, GL_TRUE);
@@ -414,6 +447,13 @@ void CGameWorld::Draw()
 	glFogf(GL_FOG_START, 16.0f);
 	glFogf(GL_FOG_END, 64.0f);
 
+	if(m_drawWire == true)
+	{
+		glDisable(GL_LIGHTING);
+		glDisable(GL_FOG);
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	} else glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
 	m_player->UpdateCamera();
 	//m_player->m_position.z += -0.01f;
 	//m_player->m_position.x += 0.001f;
@@ -443,10 +483,18 @@ void CGameWorld::Draw()
 	
 	glPushMatrix();
 	glEnable(GL_LIGHTING);
-	glTranslatef(0, -1, 0);
-	glScalef(0.5f,0.5f,0.5f);
-	//glScalef(3,3,3);
+	//glTranslatef(0, -1, 0);
+	//glScalef(0.5f,0.5f,0.5f);
 	dl.Draw();
+#ifdef _EDITOR
+	if(editorInvoked)
+	{
+		//glScalef(2, 2, 2);
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		collision.Draw();
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	}
+#endif
 	glPopMatrix();
 	
 	/*
@@ -490,4 +538,17 @@ void CGameWorld::InitEditor(HWND parent, HINSTANCE instance)
 	CreateSplash(parent, instance);
 	CreateEditorWindow(parent, instance);
 #endif
+}
+
+void CGameWorld::CheckWorldCollision(CCollisionPacket &packet)
+{
+	for(int i = 0; i < collision.m_faceCount; i += 3)
+	{
+		Face tri;
+		tri.p1 = collision.m_faces[i].p1;
+		tri.p2 = collision.m_faces[i].p2;
+		tri.p3 = collision.m_faces[i].p3;
+
+		packet.CheckTriangle(tri.p1, tri.p2, tri.p3);
+	}
 }

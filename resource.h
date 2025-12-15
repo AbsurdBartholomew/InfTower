@@ -13,6 +13,11 @@
 #define IDD_P_NODE3D                    110
 #define IDD_MATRIX_EDITOR               111
 #define IDD_NAMEENTRY                   112
+#define IDB_TREE_NODE3D                 113
+#define IDB_TREE_UNKNOWN                114
+#define IDB_TREE_TRILIST                115
+#define IDD_P_INTERACTIVE               116
+#define IDD_P_CANNOTEDIT                117
 #define IDC_TREE1                       1000
 #define IDC_N3D_POSEDIT                 1003
 #define IDC_N3D_ROTEDIT                 1004
@@ -42,13 +47,14 @@
 #define IDS_EDITOR                      40002
 #define ID_FILE_SAVEFLR                 40004
 #define IDS_LOADGAME                    40005
+#define IDS_DRAWWIRE                    40006
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        113
-#define _APS_NEXT_COMMAND_VALUE         40006
+#define _APS_NEXT_RESOURCE_VALUE        118
+#define _APS_NEXT_COMMAND_VALUE         40007
 #define _APS_NEXT_CONTROL_VALUE         1012
 #define _APS_NEXT_SYMED_VALUE           101
 #endif

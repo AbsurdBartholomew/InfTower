@@ -93,6 +93,8 @@ void CDisplayList::Load(const char *filePath)
 
 	m_triCount = faceCount * 3;
 	m_tris = new Tri[m_triCount];
+	m_faces = new Face[m_triCount];
+	m_faceCount = m_triCount;
 
 	//sprintf(TEST, "Face Count: %d\nTri Count: %d\n Texture Name:%s\n", faceCount, m_triCount, thisTextureName);
 	//MessageBox(NULL, TEST, "Display List", MB_OK);
@@ -108,7 +110,14 @@ void CDisplayList::Load(const char *filePath)
 	}
 
 	for(int u = 0; u < faceCount * 3; u++)
-    {                    
+    {
+		Face tri;
+		tri.p1 = m_tris[u].Vtx;
+		tri.p2 = m_tris[u + 1].Vtx;
+		tri.p3 = m_tris[u + 2].Vtx;
+
+		m_faces[u] = tri;
+
 		fread(&m_tris[u].UV, sizeof(Vector2), 1, fPtr);
     }
 
@@ -125,6 +134,9 @@ void CDisplayList::Load(const char *filePath)
 		glNormal3f(m_tris[t].Normal.x, m_tris[t].Normal.y, m_tris[t].Normal.z);
         glTexCoord2f(m_tris[t].UV.x, m_tris[t].UV.y);
         glVertex3f(m_tris[t].Vtx.x, m_tris[t].Vtx.y, m_tris[t].Vtx.z);
+		//glVertex3f(m_faces[t].p1.x, m_faces[t].p1.y, m_faces[t].p1.z);
+		//glVertex3f(m_faces[t].p2.x, m_faces[t].p2.y, m_faces[t].p2.z);
+		//glVertex3f(m_faces[t].p3.x, m_faces[t].p3.y, m_faces[t].p3.z);
 	}
 
 	glEnd();

@@ -56,18 +56,25 @@ LONG WINAPI WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			break;
 		case IDS_EDITOR:
 #ifdef _EDITOR
-			if(fullscreen == false)
+			if(editorInvoked == false)
 			{
-				Log::Print("Editor Invoked\n");
-				gameWorld->InitEditor(currentHWnd, GetModuleHandle(NULL));
+				if(fullscreen == false)
+				{
+					Log::Print("Editor Invoked\n");
+					gameWorld->InitEditor(currentHWnd, GetModuleHandle(NULL));
 
-				editorInvoked = true;
-			} else Log::Print("Editor was invoked but the game has to be running in windowed mode for it to work. Continuing normally...\n");
+					editorInvoked = true;
+				} else Log::Print("Editor was invoked but the game has to be running in windowed mode for it to work. Continuing normally...\n");
+			}
 #endif
 			break;
 		case IDS_LOADGAME:
 			Log::Print("Load game called...\n");
 			break;
+#ifdef _EDITOR
+		case IDS_DRAWWIRE:
+			gameWorld->m_drawWire = !gameWorld->m_drawWire;
+#endif
 		}
 		return 0;
 
@@ -316,6 +323,8 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	hDC = GetDC(hWnd);
 	hRC = wglCreateContext(hDC);
 	wglMakeCurrent(hDC, hRC);
+
+	InitCommonControls();
 
 	ShowWindow(hWnd, SW_SHOW);
 	UpdateWindow(hWnd);

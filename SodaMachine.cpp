@@ -22,6 +22,10 @@ CSodaMachine::~CSodaMachine()
 
 }
 
+void CSodaMachine::Init()
+{
+}
+
 
 bool CSodaMachine::Check(void* data)
 {

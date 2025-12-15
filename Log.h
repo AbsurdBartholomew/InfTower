@@ -22,6 +22,8 @@ public:
 	static void CloseLogFile();
 
 private:
+	static void PrintLine();
+
 	static FILE *m_fp;
 };
 

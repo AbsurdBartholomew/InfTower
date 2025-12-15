@@ -8,6 +8,7 @@
 #include <GL/glu.h>
 #include "Input.h"
 #include "Log.h"
+#include "GameWorld.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -39,6 +40,11 @@ CPlayer::CPlayer()
 	m_currentWalkSpeed = 0.0f;
 	m_angle = 0.0f;
 	m_verticalLookOffset = 0.0f;
+
+	m_collisionPacket = new CCollisionPacket();
+	m_collisionPacket->m_radius = 1.0f;
+
+	m_onGround = true;
 
 	Log::Print("I'm at %f %f %f\n", m_position.x, m_position.y, m_position.z);
 
@@ -141,6 +147,11 @@ void CPlayer::Update(int dT)
 		MoveRight();
 	}
 
+	if(CInput::IsKeyHeld(VK_SPACE) || CInput::IsKeyHeld(VK_HOME))
+	{
+		Jump();
+	}
+
 	m_currentWalkSpeed -= SPEEDUP;
 	if(m_currentWalkSpeed < 0) m_currentWalkSpeed = 0;
 
@@ -184,5 +195,83 @@ void CPlayer::MoveRight()
 
 void CPlayer::Jump()
 {
+	if(m_onGround == true)
+	{
+		m_velocity.y += 0.2f;
+		m_onGround = false;
+	}
+}
 
+void CPlayer::CollideAndSlide()
+{
+	m_collisionPacket->m_r3Position = m_position;
+	m_collisionPacket->m_r3Velocity = m_velocity;
+
+	Vector3 eSpacePosition = m_collisionPacket->m_r3Position /
+							 m_collisionPacket->m_radius;
+	Vector3 eSpaceVelocity = m_collisionPacket->m_r3Velocity /
+							 m_collisionPacket->m_radius;
+
+	m_collisionRecursionDepth = 0;
+	Vector3 finalPos = CollideWithWorld(eSpacePosition, eSpaceVelocity);
+
+	if(eSpaceVelocity.y <= -0.005f && eSpaceVelocity.y >= 0.005f) m_onGround = true;
+
+	// TODO: gravity
+	m_velocity.y -= 0.001f;
+	if(m_velocity.y >= 0.005f) m_velocity.y -= 0.005f;
+
+	finalPos *= m_collisionPacket->m_radius;
+
+	//m_position += m_velocity;
+	m_position = finalPos;
+}
+
+const float UNITS_PER_METER = 1.0f;
+
+Vector3 CPlayer::CollideWithWorld(const Vector3& pos, const Vector3& vel)
+{
+	float veryCloseDistance = 0.005f;
+
+	if(m_collisionRecursionDepth > 5) return pos;
+
+	m_collisionPacket->m_velocity = vel;
+	m_collisionPacket->m_normalizedVelocity = vel;
+	m_collisionPacket->m_normalizedVelocity.GetMagnitude();
+	m_collisionPacket->m_basePoint = pos;
+	m_collisionPacket->m_foundCollision = false;
+
+	// Parent is very likely our game world...
+	CGameWorld *world = (CGameWorld*)m_parent;
+	world->CheckWorldCollision(*m_collisionPacket);
+
+	if(m_collisionPacket->m_foundCollision == false) return pos + vel;
+	// Collision occured
+
+	Vector3 destPoint = pos + vel;
+	Vector3 newBasePoint = pos;
+
+	if(m_collisionPacket->m_nearestDistance >= veryCloseDistance)
+	{
+		Vector3 v = Vector3(vel.x, vel.y, vel.z);
+		v.SetLength(m_collisionPacket->m_nearestDistance - veryCloseDistance);
+		newBasePoint = m_collisionPacket->m_basePoint + v;
+
+		v.Normalize();
+		m_collisionPacket->m_intersectionPoint -= veryCloseDistance * v;
+	}
+
+	Vector3 slidePlaneOrigin = m_collisionPacket->m_intersectionPoint;
+	Vector3 slidePlaneNormal = newBasePoint - m_collisionPacket->m_intersectionPoint;
+
+	slidePlaneNormal.Normalize();
+	Plane slidingPlane(slidePlaneOrigin, slidePlaneNormal);
+
+	Vector3 newDestPoint = destPoint - slidingPlane.SignedDistanceTo(destPoint)*slidePlaneNormal;
+	Vector3 newVelVector = newDestPoint - m_collisionPacket->m_intersectionPoint;
+
+	if(newVelVector.GetMagnitude() < veryCloseDistance) return newBasePoint;
+
+	m_collisionRecursionDepth++;
+	return CollideWithWorld(newBasePoint, newVelVector);
 }

@@ -20,6 +20,8 @@ public:
 
 	void UpdateCamera();
 	void Update(int dT);
+
+	void CollideAndSlide();
 	
 	static CPlayer *New() { return new CPlayer(); }
 	void Register(unsigned short version);
@@ -34,6 +36,7 @@ public:
 	static CGameGlobals globals;
 
 	float m_verticalLookOffset;
+	CDisplayList *m_map;
 
 private:
 	void MoveForward();
@@ -43,12 +46,19 @@ private:
 
 	void Jump();
 
+	bool m_onGround;
+
+	Vector3 CollideWithWorld(const Vector3& pos, const Vector3& vel);
+	int m_collisionRecursionDepth;
+
 	float m_currentWalkSpeed;
 	float m_angle;
 
 	float m_walkFrames;
 
 	Vector3 m_direction;
+
+	CCollisionPacket *m_collisionPacket;
 };
 
 #endif // !defined(AFX_PLAYER_H__5C8F184D_30D0_4A78_9823_516C973CCC1F__INCLUDED_)

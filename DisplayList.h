@@ -13,12 +13,20 @@
 #include <windows.h>
 #include <GL/gl.h>
 #include "Vector3.h"
+#include <vector>
 
-struct Tri
+struct Tri // this is a vertex actually!!
 {
 	Vector3 Vtx;
 	Vector3 Normal;
 	Vector2 UV;
+};
+
+struct Face
+{
+	Vector3 p1;
+	Vector3 p2;
+	Vector3 p3;
 };
 
 class CDisplayList : public CRsrc  
@@ -41,6 +49,10 @@ public:
 
 	GLuint m_glList;
 	GLuint m_texture;
+
+	// not read from the file - generated for collision detection
+	Face *m_faces;
+	int m_faceCount;
 
 private:
 	Tri* m_tris;

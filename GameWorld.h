@@ -24,10 +24,14 @@ public:
 	void Update(int dT);
 	void Draw();
 
+	void CheckWorldCollision(CCollisionPacket &packet);
+
 	void InitEditor(HWND parent, HINSTANCE instance);
 
 	HDC m_hdc;
 	HWND m_hwnd;
+	
+	bool m_drawWire;
 
 private:
 	CFloor *m_prevFloor;

@@ -123,8 +123,10 @@ BEGIN
 END
 #endif
 
-IDD_P_NODE3D DIALOG DISCARDABLE  0, 0, 161, 141
-STYLE WS_CHILD
+IDD_P_NODE3D DIALOGEX 0, 0, 162, 142
+STYLE WS_MINIMIZEBOX | WS_POPUP | WS_CAPTION
+EXSTYLE WS_EX_TOOLWINDOW
+CAPTION "Node3D Settings"
 FONT 8, "MS Sans Serif"
 BEGIN
     EDITTEXT        IDC_N3D_POSEDIT,50,18,100,14,ES_AUTOHSCROLL
@@ -140,7 +142,7 @@ BEGIN
                     BS_AUTOCHECKBOX | WS_TABSTOP,100,125,56,10
     EDITTEXT        IDC_N3D_VELOCITY,50,80,100,14,ES_AUTOHSCROLL
     LTEXT           "Velocity",IDC_STATIC,15,83,26,8
-    PUSHBUTTON      "Matrix Edit",IDC_N3D_MTXEDIT,45,125,50,14
+    PUSHBUTTON      "Matrix Edit",IDC_N3D_MTXEDIT,45,121,50,14
 END
 
 IDD_MATRIX_EDITOR DIALOGEX 0, 0, 186, 111
@@ -180,6 +182,38 @@ BEGIN
     EDITTEXT        IDC_EDIT1,5,25,180,19,ES_AUTOHSCROLL
 END
 
+IDD_P_INTERACTIVE DIALOGEX 0, 0, 166, 249
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION
+EXSTYLE WS_EX_TOOLWINDOW
+CAPTION "Interactive Settings"
+FONT 8, "MS Sans Serif"
+BEGIN
+    EDITTEXT        IDC_N3D_POSEDIT,50,26,100,14,ES_AUTOHSCROLL
+    GROUPBOX        "Positional",IDC_STATIC,0,9,160,110
+    LTEXT           "Position",IDC_STATIC,15,29,26,8
+    EDITTEXT        IDC_N3D_ROTEDIT,50,47,100,14,ES_AUTOHSCROLL
+    LTEXT           "Rotation",IDC_STATIC,15,49,28,8
+    EDITTEXT        IDC_N3D_SCALEDIT,50,66,100,14,ES_AUTOHSCROLL
+    LTEXT           "Scale",IDC_STATIC,15,69,19,8
+    CONTROL         "Visible",IDC_N3D_VISIBLE,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,5,134,36,10
+    CONTROL         "Has Collision",IDC_N3D_COLLIDABLE,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,100,134,56,10
+    EDITTEXT        IDC_N3D_VELOCITY,50,89,100,14,ES_AUTOHSCROLL
+    LTEXT           "Velocity",IDC_STATIC,15,92,26,8
+    PUSHBUTTON      "Matrix Edit",IDC_N3D_MTXEDIT,45,130,50,14
+    GROUPBOX        "Interactive",IDC_STATIC,7,150,152,92
+END
+
+IDD_P_CANNOTEDIT DIALOGEX 0, 0, 87, 25
+STYLE WS_POPUP | WS_CAPTION
+EXSTYLE WS_EX_TOOLWINDOW
+CAPTION "Settings"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Cannot edit this object.",IDC_STATIC,7,7,73,8
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -208,9 +242,9 @@ BEGIN
     IDD_P_NODE3D, DIALOG
     BEGIN
         LEFTMARGIN, 7
-        RIGHTMARGIN, 154
+        RIGHTMARGIN, 155
         TOPMARGIN, 7
-        BOTTOMMARGIN, 134
+        BOTTOMMARGIN, 135
     END
 
     IDD_MATRIX_EDITOR, DIALOG
@@ -227,6 +261,22 @@ BEGIN
         RIGHTMARGIN, 185
         TOPMARGIN, 7
         BOTTOMMARGIN, 67
+    END
+
+    IDD_P_INTERACTIVE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 159
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 242
+    END
+
+    IDD_P_CANNOTEDIT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 80
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 18
     END
 END
 #endif    // APSTUDIO_INVOKED
@@ -251,6 +301,7 @@ BEGIN
     "E",            IDS_EDITOR,             VIRTKEY, NOINVERT
     "O",            IDS_LOADGAME,           VIRTKEY, CONTROL, NOINVERT
     "S",            IDS_SAVE,               VIRTKEY, CONTROL, NOINVERT
+    "W",            IDS_DRAWWIRE,           VIRTKEY, CONTROL, NOINVERT
 END
 
 
@@ -281,6 +332,21 @@ END
 //
 
 IDB_BITMAP1             BITMAP  DISCARDABLE     "bitmap1.bmp"
+#if defined(APSTUDIO_INVOKED) || defined(_EDITOR)
+#if defined(APSTUDIO_INVOKED)
+IDB_TREE_NODE3D$(_EDITOR) BITMAP  DISCARDABLE     "tree_nod.bmp"
+#else
+IDB_TREE_NODE3D         BITMAP  DISCARDABLE     "tree_nod.bmp"
+#endif
+#endif
+#if defined(APSTUDIO_INVOKED) || defined(_DEBUG)
+#if defined(APSTUDIO_INVOKED)
+IDB_TREE_UNKNOWN$(_DEBUG) BITMAP  DISCARDABLE     "bitmap2.bmp"
+#else
+IDB_TREE_UNKNOWN        BITMAP  DISCARDABLE     "bitmap2.bmp"
+#endif
+#endif
+IDB_TREE_TRILIST        BITMAP  DISCARDABLE     "bmp00001.bmp"
 
 /////////////////////////////////////////////////////////////////////////////
 //
