@@ -3,3 +3,5 @@ Release/
 inftower.log
 InfTower.exe
 SaveData.glb
+Content/*.zip
+Content/*.exe

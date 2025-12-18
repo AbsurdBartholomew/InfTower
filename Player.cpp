@@ -197,7 +197,7 @@ void CPlayer::Jump()
 {
 	if(m_onGround == true)
 	{
-		m_velocity.y += 0.2f;
+		m_velocity.y += 0.1f;
 		m_onGround = false;
 	}
 }
@@ -243,9 +243,10 @@ Vector3 CPlayer::CollideWithWorld(const Vector3& pos, const Vector3& vel)
 
 	// Parent is very likely our game world...
 	CGameWorld *world = (CGameWorld*)m_parent;
-	world->CheckWorldCollision(*m_collisionPacket);
+	if(world) world->CheckWorldCollision(*m_collisionPacket);
 
 	if(m_collisionPacket->m_foundCollision == false) return pos + vel;
+	m_onGround = true; // TEMP needs a proper check with a ray or something similar
 	// Collision occured
 
 	Vector3 destPoint = pos + vel;

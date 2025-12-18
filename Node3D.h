@@ -30,6 +30,7 @@ public:
 	Vector3 m_intersectionPoint;
 
 	void CheckTriangle(const Vector3& p1, const Vector3& p2, const Vector3& p3);
+	// TODO: other check functions like range or aabb
 };
 
 class CNode3D  : public CNode

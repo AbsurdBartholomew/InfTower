@@ -382,7 +382,7 @@ void CGameWorld::Init()
 	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, amb);
     glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER, GL_TRUE);
 
-	float light_radius = 5.0f;
+	float light_radius = 16.0f;
 
     for (int i = 0; i < 8; i++)
     {

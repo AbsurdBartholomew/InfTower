@@ -168,7 +168,7 @@ HWND MakeWindow(const char *title, int x, int y, int w, int h)
 	AdjustWindowRectEx(&wRect, style, FALSE, exStyle);
 
 	hWnd = CreateWindowEx(exStyle, "InfTower", title, style,
-			x, y, w, h, NULL, NULL, hInstance, NULL);
+			x, y, wRect.right - wRect.left, wRect.bottom - wRect.top, NULL, NULL, hInstance, NULL);
 
     if (hWnd == NULL) {
 	MessageBox(NULL, "CreateWindow() failed:  Cannot create a window.",

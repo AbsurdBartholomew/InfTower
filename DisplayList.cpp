@@ -86,7 +86,7 @@ void CDisplayList::Load(const char *filePath)
 	fread(&tempTxtrNameSize, sizeof(tempTxtrNameSize), 1, fPtr);
 	fread(m_bitmapName, 1, tempTxtrNameSize, fPtr);
 	
-	if(osvi.dwMajorVersion >= 5) LoadTexture();
+	if(osvi.dwMajorVersion >= 1) LoadTexture();
 
 	fread(&faceCount, 4, 1, fPtr);
 	Log::Print("Texture Name: '%s'\nFace Count: %d\n", m_bitmapName, faceCount);

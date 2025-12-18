@@ -6,13 +6,13 @@
 --------------------Configuration: InfTower - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\Users\SILLYB~1\AppData\Local\Temp\RSPBD51.tmp" with contents
+Creating temporary file "C:\Users\SILLYB~1\AppData\Local\Temp\RSP7EDB.tmp" with contents
 [
 /nologo /MLd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_EDITOR" /FR"Debug/" /Fp"Debug/InfTower.pch" /YX /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
-"E:\project7\InfTower\VcSrc\Player.cpp"
+"E:\project7\InfTower\VcSrc\GameWorld.cpp"
 ]
-Creating command line "cl.exe @C:\Users\SILLYB~1\AppData\Local\Temp\RSPBD51.tmp" 
-Creating temporary file "C:\Users\SILLYB~1\AppData\Local\Temp\RSPBD52.tmp" with contents
+Creating command line "cl.exe @C:\Users\SILLYB~1\AppData\Local\Temp\RSP7EDB.tmp" 
+Creating temporary file "C:\Users\SILLYB~1\AppData\Local\Temp\RSP7EDC.tmp" with contents
 [
 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib opengl32.lib glu32.lib winmm.lib Comctl32.lib /nologo /subsystem:windows /incremental:yes /pdb:"Debug/InfTower.pdb" /debug /machine:I386 /out:"Debug/InfTower.exe" /pdbtype:sept 
 .\Debug\AVIPlayer.obj
@@ -36,12 +36,14 @@ kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32
 .\Debug\Vector3.obj
 .\Debug\res.res
 ]
-Creating command line "link.exe @C:\Users\SILLYB~1\AppData\Local\Temp\RSPBD52.tmp"
+Creating command line "link.exe @C:\Users\SILLYB~1\AppData\Local\Temp\RSP7EDC.tmp"
 <h3>Output Window</h3>
 Compiling...
-Player.cpp
+GameWorld.cpp
+E:\project7\InfTower\VcSrc\GameWorld.cpp(419) : warning C4305: 'argument' : truncation from 'const double' to 'float'
+E:\project7\InfTower\VcSrc\GameWorld.cpp(420) : warning C4305: 'argument' : truncation from 'const double' to 'float'
 Linking...
-Creating temporary file "C:\Users\SILLYB~1\AppData\Local\Temp\RSPBDEF.tmp" with contents
+Creating temporary file "C:\Users\SILLYB~1\AppData\Local\Temp\RSP7FA8.tmp" with contents
 [
 /nologo /o"Debug/InfTower.bsc" 
 .\Debug\AVIPlayer.sbr
@@ -63,14 +65,14 @@ Creating temporary file "C:\Users\SILLYB~1\AppData\Local\Temp\RSPBDEF.tmp" with 
 .\Debug\SodaMachine.sbr
 .\Debug\StaircaseDoor.sbr
 .\Debug\Vector3.sbr]
-Creating command line "bscmake.exe @C:\Users\SILLYB~1\AppData\Local\Temp\RSPBDEF.tmp"
+Creating command line "bscmake.exe @C:\Users\SILLYB~1\AppData\Local\Temp\RSP7FA8.tmp"
 Creating browse info file...
 <h3>Output Window</h3>
 
 
 
 <h3>Results</h3>
-InfTower.exe - 0 error(s), 0 warning(s)
+InfTower.exe - 0 error(s), 2 warning(s)
 </pre>
 </body>
 </html>

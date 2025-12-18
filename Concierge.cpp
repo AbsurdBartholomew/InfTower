@@ -43,6 +43,21 @@ static bool DoNameEntry()
 
 }
 
+static BOOL CALLBACK ConciergeNameDlgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
+{
+	switch(msg)
+	{
+	case WM_DESTROY:
+		PostQuitMessage(WM_QUIT);
+		break;
+
+	default:
+		return DefDlgProc(hWnd, msg, wParam, lParam);
+	}
+
+	return 0;
+}
+
 void CConcierge::Action()
 {
 	m_sawMessage = true;
@@ -50,7 +65,7 @@ void CConcierge::Action()
 	MessageBox(currentHWnd, "Hey! How can I help you?", "The Concierge", MB_OK);
 	MessageBox(currentHWnd, "You're here for your room?", "The Concierge", MB_OK);
 	//MessageBox(NULL, "Okay. Just let me get your information. And your name is?", "The Concierge", MB_OK);
-	//DialogBox(NULL, MAKEINTRESOURCE(IDD_NAMEENTRY), currentHWnd, NULL);
+	//DialogBox(NULL, MAKEINTRESOURCE(IDD_NAMEENTRY), currentHWnd, ConciergeNameDlgProc);
 
 	MessageBox(currentHWnd, "Okay! Your room number is 30026, which is on the 300th floor.", "The Concierge", MB_OK);
 	MessageBox(currentHWnd, "You might want to take the elevator for that.", "The Concierge", MB_OK);
